@@ -35,6 +35,10 @@
     <ClCompile Include="modules\window\Window.ixx" />
     <ClCompile Include="sources\main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\default_fs.txt" />
+    <Text Include="resources\default_vs.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

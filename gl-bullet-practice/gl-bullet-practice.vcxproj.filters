@@ -76,4 +76,12 @@
       <Filter>모듈\primitives</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\default_fs.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
+    <Text Include="resources\default_vs.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

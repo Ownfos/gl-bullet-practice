@@ -36,8 +36,8 @@ int main()
                 }
             });
 
-        auto vs = ShaderSourceFromFile("default_vs.txt");
-        auto fs = ShaderSourceFromFile("default_fs.txt");
+        auto vs = ShaderSourceFromFile("resources/default_vs.txt");
+        auto fs = ShaderSourceFromFile("resources/default_fs.txt");
         auto shader = ShaderProgram(&vs, &fs);
 
         auto color = std::vector<float>{
