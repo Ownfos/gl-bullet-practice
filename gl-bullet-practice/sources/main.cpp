@@ -1,13 +1,3 @@
-// [Project Settings]
-// - c++latest as standard
-// - experimental:module enabled
-// - x64 as build configuration
-// - vcpkg commands:
-//		vcpkg install glew --triplet=x64-windows
-//		vcpkg install glfw3 --triplet=x64-windows
-//		vcpkg install glm --triplet=x64-windows
-//		vcpkg install bullet --triplet=x64-windows
-
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
 
