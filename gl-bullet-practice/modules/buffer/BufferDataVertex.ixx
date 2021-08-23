@@ -39,17 +39,13 @@ export namespace ownfos::opengl
     public:
         BufferDataVertex() = default;
         BufferDataVertex(BufferDataVertex&&) = default;
-        BufferDataVertex(const BufferDataVertex&) = delete;
 
-        BufferDataVertex(std::vector<T>&& data, const std::vector<VertexDataAttribute>&attributes)
+        BufferDataVertex(std::vector<T> && data, const std::vector<VertexDataAttribute>&attributes)
             : data(std::move(data))
             , attributes(attributes)
         {}
 
         BufferDataVertex& operator=(BufferDataVertex&&) = default;
-        BufferDataVertex& operator=(const BufferDataVertex&) = delete;
-
-        ~BufferDataVertex() = default;
 
         void bind_to(unsigned int buffer, unsigned int usage) const override
         {

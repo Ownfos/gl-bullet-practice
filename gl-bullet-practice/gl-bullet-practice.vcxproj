@@ -18,6 +18,23 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="modules\buffer\BufferDataIndex.ixx" />
+    <ClCompile Include="modules\buffer\BufferDataVertex.ixx" />
+    <ClCompile Include="modules\buffer\IBufferData.ixx" />
+    <ClCompile Include="modules\buffer\VertexBuffer.ixx" />
+    <ClCompile Include="modules\primitives\Cube.ixx" />
+    <ClCompile Include="modules\primitives\Plane.ixx" />
+    <ClCompile Include="modules\primitives\PrimitiveModelData.ixx" />
+    <ClCompile Include="modules\shader\IShaderSource.ixx" />
+    <ClCompile Include="modules\shader\ShaderProgram.ixx" />
+    <ClCompile Include="modules\shader\ShaderSourceComposite.ixx" />
+    <ClCompile Include="modules\shader\ShaderSourceFromFile.ixx" />
+    <ClCompile Include="modules\shader\ShaderSourceFromString.ixx" />
+    <ClCompile Include="modules\window\GLFWInitializer.ixx" />
+    <ClCompile Include="modules\window\Window.ixx" />
+    <ClCompile Include="sources\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -140,23 +157,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="BufferDataIndex.ixx" />
-    <ClCompile Include="BufferDataVertex.ixx" />
-    <ClCompile Include="Cube.ixx" />
-    <ClCompile Include="GLFWInitializer.ixx" />
-    <ClCompile Include="IBufferData.ixx" />
-    <ClCompile Include="IShaderSource.ixx" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Plane.ixx" />
-    <ClCompile Include="PrimitiveModelData.ixx" />
-    <ClCompile Include="ShaderProgram.ixx" />
-    <ClCompile Include="ShaderSourceComposite.ixx" />
-    <ClCompile Include="ShaderSourceFromFile.ixx" />
-    <ClCompile Include="ShaderSourceFromString.ixx" />
-    <ClCompile Include="VertexBuffer.ixx" />
-    <ClCompile Include="Window.ixx" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

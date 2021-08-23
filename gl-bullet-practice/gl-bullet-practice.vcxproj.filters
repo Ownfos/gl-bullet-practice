@@ -16,64 +16,64 @@
     <Filter Include="모듈">
       <UniqueIdentifier>{5231bf94-9c5a-44ba-9620-ea3d0091fbd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="모듈\Buffer">
+    <Filter Include="모듈\buffer">
       <UniqueIdentifier>{9b12a6df-4fc5-4561-9b01-f1e46d0e8fc6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="모듈\Primitives">
-      <UniqueIdentifier>{a49f23a2-2fe3-4ceb-b07d-a8f710d7744f}</UniqueIdentifier>
+    <Filter Include="모듈\window">
+      <UniqueIdentifier>{eea1d123-44ba-4b64-af7e-cbe34d3a9a5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="모듈\Shader">
+    <Filter Include="모듈\shader">
       <UniqueIdentifier>{24b24464-c27e-47f6-9a28-63dcec0d8eee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="모듈\Window">
-      <UniqueIdentifier>{eea1d123-44ba-4b64-af7e-cbe34d3a9a5b}</UniqueIdentifier>
+    <Filter Include="모듈\primitives">
+      <UniqueIdentifier>{a49f23a2-2fe3-4ceb-b07d-a8f710d7744f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="sources\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BufferDataIndex.ixx">
-      <Filter>모듈\Buffer</Filter>
+    <ClCompile Include="modules\buffer\IBufferData.ixx">
+      <Filter>모듈\buffer</Filter>
     </ClCompile>
-    <ClCompile Include="BufferDataVertex.ixx">
-      <Filter>모듈\Buffer</Filter>
+    <ClCompile Include="modules\buffer\VertexBuffer.ixx">
+      <Filter>모듈\buffer</Filter>
     </ClCompile>
-    <ClCompile Include="IBufferData.ixx">
-      <Filter>모듈\Buffer</Filter>
+    <ClCompile Include="modules\buffer\BufferDataIndex.ixx">
+      <Filter>모듈\buffer</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBuffer.ixx">
-      <Filter>모듈\Buffer</Filter>
+    <ClCompile Include="modules\buffer\BufferDataVertex.ixx">
+      <Filter>모듈\buffer</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.ixx">
-      <Filter>모듈\Primitives</Filter>
+    <ClCompile Include="modules\window\GLFWInitializer.ixx">
+      <Filter>모듈\window</Filter>
     </ClCompile>
-    <ClCompile Include="Plane.ixx">
-      <Filter>모듈\Primitives</Filter>
+    <ClCompile Include="modules\window\Window.ixx">
+      <Filter>모듈\window</Filter>
     </ClCompile>
-    <ClCompile Include="PrimitiveModelData.ixx">
-      <Filter>모듈\Primitives</Filter>
+    <ClCompile Include="modules\shader\IShaderSource.ixx">
+      <Filter>모듈\shader</Filter>
     </ClCompile>
-    <ClCompile Include="IShaderSource.ixx">
-      <Filter>모듈\Shader</Filter>
+    <ClCompile Include="modules\shader\ShaderProgram.ixx">
+      <Filter>모듈\shader</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderProgram.ixx">
-      <Filter>모듈\Shader</Filter>
+    <ClCompile Include="modules\shader\ShaderSourceComposite.ixx">
+      <Filter>모듈\shader</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderSourceComposite.ixx">
-      <Filter>모듈\Shader</Filter>
+    <ClCompile Include="modules\shader\ShaderSourceFromFile.ixx">
+      <Filter>모듈\shader</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderSourceFromFile.ixx">
-      <Filter>모듈\Shader</Filter>
+    <ClCompile Include="modules\shader\ShaderSourceFromString.ixx">
+      <Filter>모듈\shader</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderSourceFromString.ixx">
-      <Filter>모듈\Shader</Filter>
+    <ClCompile Include="modules\primitives\Cube.ixx">
+      <Filter>모듈\primitives</Filter>
     </ClCompile>
-    <ClCompile Include="GLFWInitializer.ixx">
-      <Filter>모듈\Window</Filter>
+    <ClCompile Include="modules\primitives\Plane.ixx">
+      <Filter>모듈\primitives</Filter>
     </ClCompile>
-    <ClCompile Include="Window.ixx">
-      <Filter>모듈\Window</Filter>
+    <ClCompile Include="modules\primitives\PrimitiveModelData.ixx">
+      <Filter>모듈\primitives</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
