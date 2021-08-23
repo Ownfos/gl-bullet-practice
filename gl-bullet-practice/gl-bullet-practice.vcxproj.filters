@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="모듈">
+      <UniqueIdentifier>{5231bf94-9c5a-44ba-9620-ea3d0091fbd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\Buffer">
+      <UniqueIdentifier>{9b12a6df-4fc5-4561-9b01-f1e46d0e8fc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\Primitives">
+      <UniqueIdentifier>{a49f23a2-2fe3-4ceb-b07d-a8f710d7744f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\Shader">
+      <UniqueIdentifier>{24b24464-c27e-47f6-9a28-63dcec0d8eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\Window">
+      <UniqueIdentifier>{eea1d123-44ba-4b64-af7e-cbe34d3a9a5b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferDataIndex.ixx">
+      <Filter>모듈\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferDataVertex.ixx">
+      <Filter>모듈\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="IBufferData.ixx">
+      <Filter>모듈\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.ixx">
+      <Filter>모듈\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.ixx">
+      <Filter>모듈\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.ixx">
+      <Filter>모듈\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="PrimitiveModelData.ixx">
+      <Filter>모듈\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="IShaderSource.ixx">
+      <Filter>모듈\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.ixx">
+      <Filter>모듈\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderSourceComposite.ixx">
+      <Filter>모듈\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderSourceFromFile.ixx">
+      <Filter>모듈\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderSourceFromString.ixx">
+      <Filter>모듈\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GLFWInitializer.ixx">
+      <Filter>모듈\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.ixx">
+      <Filter>모듈\Window</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
