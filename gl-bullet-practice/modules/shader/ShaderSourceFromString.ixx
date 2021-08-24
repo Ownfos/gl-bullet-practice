@@ -1,3 +1,7 @@
+module;
+
+#include <string>
+
 export module ShaderSourceFromString;
 
 export import IShaderSource;

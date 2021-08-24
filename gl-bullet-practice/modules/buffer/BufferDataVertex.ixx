@@ -1,11 +1,11 @@
 module;
 
 #include <gl/glew.h>
+#include <vector>
 
 export module BufferDataVertex;
 
 export import IBufferData;
-export import std.core;
 
 export namespace ownfos::opengl
 {

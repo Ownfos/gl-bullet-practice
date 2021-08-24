@@ -1,6 +1,8 @@
-export module IShaderSource;
+module;
 
-export import std.core;
+#include <string>
+
+export module IShaderSource;
 
 export namespace ownfos::opengl
 {

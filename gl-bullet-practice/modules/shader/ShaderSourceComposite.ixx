@@ -1,3 +1,9 @@
+module;
+
+#include <vector>
+#include <string>
+#include <array>
+
 export module ShaderSourceComposite;
 
 export import IShaderSource;

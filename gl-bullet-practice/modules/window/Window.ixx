@@ -3,10 +3,12 @@ module;
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <vector>
+#include <functional>
+#include <string>
+#include <stdexcept>
 
 export module Window;
-
-import std.core;
 
 export namespace ownfos::opengl
 {

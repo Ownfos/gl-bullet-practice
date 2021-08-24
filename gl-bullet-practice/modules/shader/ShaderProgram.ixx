@@ -1,6 +1,8 @@
 module;
 
 #include <gl/glew.h>
+#include <stdexcept>
+#include <format>
 
 export module ShaderProgram;
 

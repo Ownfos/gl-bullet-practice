@@ -1,3 +1,8 @@
+module;
+
+#include <fstream>
+#include <format>
+
 export module ShaderSourceFromFile;
 
 export import IShaderSource;

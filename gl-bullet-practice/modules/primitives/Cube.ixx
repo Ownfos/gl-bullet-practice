@@ -1,6 +1,7 @@
 module;
 
 #include <gl/glew.h>
+#include <vector>
 
 export module Cube;
 
