@@ -1,7 +1,7 @@
 module;
 
 #include <fstream>
-#include <format>
+#include <fmt/format.h>
 
 export module ShaderSourceFromFile;
 
@@ -19,7 +19,7 @@ export namespace ownfos::opengl
             auto file = std::ifstream(file_name.data());
             if (!file.is_open())
             {
-                throw std::runtime_error(std::format("[ShaderSourceTextFile] Failed to open file \"{0}\"", file_name));
+                throw std::runtime_error(fmt::format("[ShaderSourceTextFile] Failed to open file \"{0}\"", file_name));
             }
 
             // Read content into std::string instance

@@ -2,7 +2,7 @@ module;
 
 #include <gl/glew.h>
 #include <stdexcept>
-#include <format>
+#include <fmt/format.h>
 
 export module ShaderProgram;
 
@@ -59,7 +59,7 @@ export namespace ownfos::opengl
             if (!info.success)
             {
                 glGetShaderInfoLog(shader, info.error_log.size(), nullptr, info.error_log.data());
-                throw std::runtime_error(std::format(
+                throw std::runtime_error(fmt::format(
                     "[ShaderProgram] Failed to compile shader\n"
                     "--------------------------- Source code ---------------------------\n"
                     "{0}\n"
@@ -78,7 +78,7 @@ export namespace ownfos::opengl
             glGetProgramiv(shader_program, GL_LINK_STATUS, &info.success);
             if (!info.success) {
                 glGetProgramInfoLog(shader_program, info.error_log.size(), nullptr, info.error_log.data());
-                throw std::runtime_error(std::format(
+                throw std::runtime_error(fmt::format(
                     "[ShaderProgram] Failed to link shaders into program\n"
                     "-------------------------- Error Message --------------------------\n"
                     "{0}",
