@@ -8,6 +8,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <array>
 
 import GLFWInitializer;
 import Window;
@@ -85,11 +86,14 @@ int main()
             0,1,0,1,
             0,0,1,1
         };
-        auto color_data = BufferDataVertex(std::move(color), {{.location = 1, .count = 4}});
+        auto color_data = BufferDataVertex(color, {{.location = 1, .count = 4}});
 
         auto data = plane::create_data();
 
-        auto model = VertexBuffer({ &data.position, &data.indices, &color_data }, GL_STATIC_DRAW);
+        auto model = VertexBuffer({ &data.position, &data.indices, &color_data });
+
+        float new_color[] = { 1,1,1,1 };
+        color_data.update_data(4, new_color);
 
         while (!window.should_close())
         {

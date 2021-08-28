@@ -2,6 +2,7 @@ module;
 
 #include <gl/glew.h>
 #include <vector>
+#include <ranges>
 
 export module BufferDataVertex;
 
@@ -37,20 +38,17 @@ export namespace ownfos::opengl
     class BufferDataVertex : public IBufferData
     {
     public:
-        BufferDataVertex() = default;
-        BufferDataVertex(BufferDataVertex&&) = default;
-
-        BufferDataVertex(std::vector<T> && data, const std::vector<VertexDataAttribute>&attributes)
-            : data(std::move(data))
-            , attributes(attributes)
-        {}
-
-        BufferDataVertex& operator=(BufferDataVertex&&) = default;
-
-        void bind_to(unsigned int buffer, unsigned int usage) const override
+        BufferDataVertex(const std::vector<T>& data, const std::vector<VertexDataAttribute>& attributes, unsigned int usage = GL_STATIC_DRAW)
+            : attributes(attributes)
         {
+            glGenBuffers(1, &buffer);
             glBindBuffer(GL_ARRAY_BUFFER, buffer);
             glBufferData(GL_ARRAY_BUFFER, sizeof(T) * data.size(), &data[0], usage);
+        }
+
+        void bind() const override
+        {
+            glBindBuffer(GL_ARRAY_BUFFER, buffer);
             for (const auto& attrib : attributes)
             {
                 glVertexAttribPointer(attrib.location, attrib.count, attrib.type, false, attrib.stride, (void*)attrib.offset);
@@ -58,8 +56,14 @@ export namespace ownfos::opengl
             }
         }
 
+        void update_data(int offset_index, std::span<T> new_data)
+        {
+            glBindBuffer(GL_ARRAY_BUFFER, buffer);
+            glBufferSubData(GL_ARRAY_BUFFER, sizeof(T) * offset_index, new_data.size_bytes(), new_data.data());
+        }
+
     private:
-        std::vector<T> data;
         std::vector<VertexDataAttribute> attributes;
+        unsigned int buffer;
     };
 } // namespace ownfos::opengl
