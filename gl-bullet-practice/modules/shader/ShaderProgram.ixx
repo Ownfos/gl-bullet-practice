@@ -1,6 +1,8 @@
 module;
 
 #include <gl/glew.h>
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
 #include <stdexcept>
 #include <fmt/format.h>
 
@@ -32,7 +34,47 @@ export namespace ownfos::opengl
             glUseProgram(shader_program);
         }
 
+        void set_uniform(std::string_view variable_name, bool value)
+        {
+            glUniform1f(uniform_location(variable_name), value);
+        }
+        
+        void set_uniform(std::string_view variable_name, int value)
+        {
+            glUniform1i(uniform_location(variable_name), value);
+        }
+
+        void set_uniform(std::string_view variable_name, float value)
+        {
+            glUniform1f(uniform_location(variable_name), value);
+        }
+
+        void set_uniform(std::string_view variable_name, const glm::vec2& value)
+        {
+            glUniform2f(uniform_location(variable_name), value.x, value.y);
+        }
+
+        void set_uniform(std::string_view variable_name, const glm::vec3& value)
+        {
+            glUniform3f(uniform_location(variable_name), value.x, value.y, value.z);
+        }
+
+        void set_uniform(std::string_view variable_name, const glm::vec4& value)
+        {
+            glUniform4f(uniform_location(variable_name), value.x, value.y, value.z, value.w);
+        }
+
+        void set_uniform(std::string_view variable_name, const glm::mat4& value)
+        {
+            glUniformMatrix4fv(uniform_location(variable_name), 1, GL_FALSE, glm::value_ptr(value));
+        }
+        
     private:
+        int uniform_location(std::string_view variable_name)
+        {
+            return glGetUniformLocation(shader_program, variable_name.data());
+        }
+
         void compile(unsigned int& shader, const IShaderSource* source)
         {
             const auto source_code = source->get_shader_code().data();

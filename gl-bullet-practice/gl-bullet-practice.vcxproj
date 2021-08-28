@@ -23,6 +23,10 @@
     <ClCompile Include="modules\buffer\BufferDataVertex.ixx" />
     <ClCompile Include="modules\buffer\IBufferData.ixx" />
     <ClCompile Include="modules\buffer\VertexBuffer.ixx" />
+    <ClCompile Include="modules\physics\DefaultDynamicsWorldComponents.ixx" />
+    <ClCompile Include="modules\physics\DynamicsWorld.ixx" />
+    <ClCompile Include="modules\physics\IDynamicsWorldComponents.ixx" />
+    <ClCompile Include="modules\physics\RigidBody.ixx" />
     <ClCompile Include="modules\primitives\Cube.ixx" />
     <ClCompile Include="modules\primitives\Plane.ixx" />
     <ClCompile Include="modules\primitives\PrimitiveModelData.ixx" />

@@ -28,6 +28,9 @@
     <Filter Include="모듈\primitives">
       <UniqueIdentifier>{a49f23a2-2fe3-4ceb-b07d-a8f710d7744f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="모듈\physics">
+      <UniqueIdentifier>{a8adbd7d-e799-480b-9503-010c72dfc1e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\main.cpp">
@@ -74,6 +77,18 @@
     </ClCompile>
     <ClCompile Include="modules\primitives\PrimitiveModelData.ixx">
       <Filter>모듈\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\DynamicsWorld.ixx">
+      <Filter>모듈\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\RigidBody.ixx">
+      <Filter>모듈\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\IDynamicsWorldComponents.ixx">
+      <Filter>모듈\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\DefaultDynamicsWorldComponents.ixx">
+      <Filter>모듈\physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
