@@ -10,4 +10,5 @@ A test project for using OpenGL and Bullet Physics together, with latest support
   - vcpkg install glew --triplet=x64-windows
   - vcpkg install glfw3 --triplet=x64-windows
   - vcpkg install glm --triplet=x64-windows
+  - vcpkg install fmt --triplet=x64-windows
   - vcpkg install bullet3 --triplet=x64-windows
