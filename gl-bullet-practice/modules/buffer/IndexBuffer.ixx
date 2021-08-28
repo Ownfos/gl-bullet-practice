@@ -3,16 +3,16 @@ module;
 #include <gl/glew.h>
 #include <vector>
 
-export module BufferDataIndex;
+export module IndexBuffer;
 
-export import IBufferData;
+export import IBuffer;
 
 export namespace ownfos::opengl
 {
-    class BufferDataIndex : public IBufferData
+    class IndexBuffer : public IBuffer
     {
     public:
-        BufferDataIndex(const std::vector<unsigned int>& indices, unsigned int usage = GL_STATIC_DRAW)
+        IndexBuffer(const std::vector<unsigned int>& indices, unsigned int usage = GL_STATIC_DRAW)
         {
             glGenBuffers(1, &buffer);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);

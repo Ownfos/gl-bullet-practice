@@ -1,13 +1,13 @@
 export module PrimitiveModelData;
 
-export import BufferDataVertex;
-export import BufferDataIndex;
+export import VertexBuffer;
+export import IndexBuffer;
 
 export namespace ownfos::primitives
 {
     struct PrimitiveModelData
     {
-        opengl::BufferDataVertex<float> position;
-        opengl::BufferDataIndex indices;
+        opengl::VertexBuffer<float> position;
+        opengl::IndexBuffer indices;
     };
 } // namespace ownfos::opengl

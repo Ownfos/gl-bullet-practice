@@ -25,9 +25,9 @@ std::vector<unsigned int> create_index_data()
     };
 }
 
-export namespace ownfos::primitives::plane
+export namespace ownfos::primitives
 {
-    PrimitiveModelData create_data()
+    PrimitiveModelData create_plane_model_data()
     {
         return PrimitiveModelData{
             .position = {create_vertex_data(), {{.location = 0, .count = 3}}},

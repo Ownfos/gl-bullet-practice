@@ -1,8 +1,8 @@
-export module IBufferData;
+export module IBuffer;
 
 export namespace ownfos::opengl
 {
-    class IBufferData
+    class IBuffer
     {
     public:
         virtual void bind() const = 0;

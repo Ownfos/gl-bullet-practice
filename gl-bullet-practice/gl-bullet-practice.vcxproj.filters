@@ -36,16 +36,16 @@
     <ClCompile Include="sources\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="modules\buffer\IBufferData.ixx">
+    <ClCompile Include="modules\buffer\IBuffer.ixx">
+      <Filter>모듈\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\buffer\BufferPreset.ixx">
+      <Filter>모듈\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\buffer\IndexBuffer.ixx">
       <Filter>모듈\buffer</Filter>
     </ClCompile>
     <ClCompile Include="modules\buffer\VertexBuffer.ixx">
-      <Filter>모듈\buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\buffer\BufferDataIndex.ixx">
-      <Filter>모듈\buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\buffer\BufferDataVertex.ixx">
       <Filter>모듈\buffer</Filter>
     </ClCompile>
     <ClCompile Include="modules\window\GLFWInitializer.ixx">

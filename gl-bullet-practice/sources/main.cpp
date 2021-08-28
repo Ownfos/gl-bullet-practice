@@ -13,7 +13,7 @@
 import GLFWInitializer;
 import Window;
 import ShaderProgram;
-import VertexBuffer;
+import BufferPreset;
 
 import Plane;
 import Cube;
@@ -64,37 +64,67 @@ int main()
 {
     try
     {
-        test_bullet();
-
         auto init = GLFWInitializer();
         auto window = Window(600, 600, "hello, world!");
-        window.register_key_handler([&](auto key, auto action)
-            {
-                if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-                {
-                    window.set_close_flag();
-                }
-            });
 
+        // Prepare shader.
         auto vs = ShaderSourceFromFile("resources/default_vs.txt");
         auto fs = ShaderSourceFromFile("resources/default_fs.txt");
         auto shader = ShaderProgram(&vs, &fs);
 
-        auto color = std::vector<float>{
+        // Prepare a plane model with color.
+        // You can combine multiple independent buffers containing index or vertex data
+        // to create a single BufferPreset, which corresponds to a VAO of OpenGL.
+        auto plane = create_plane_model_data();
+        auto color_data = std::vector<float>{
             1,0,1,1,
             1,0,0,1,
             0,1,0,1,
             0,0,1,1
         };
-        auto color_data = BufferDataVertex(color, {{.location = 1, .count = 4}});
+        auto color_buffer = VertexBuffer(color_data, {{.location = 1, .count = 4}});
+        auto model = BufferPreset({ &plane.position, &plane.indices, &color_buffer });
 
-        auto data = plane::create_data();
+        window.register_key_handler([&](auto key, auto action) {
+            // Switch the color of the green vertex (the 4 floats starting from the 8th element of the buffer).
+            // 
+            // You can change the content of an existing VertexBuffer at runtime
+            // by providing an index in the buffer to start writing and a span containing new data.
+            // Be careful not to exceed write beyond existing buffer's range.
+            // It won't automatically resize the buffer for you.
+            //
+            // If you want to resize the buffer and use completely different data,
+            // call set_new_data() with the new data and its usage.
+            if (key == GLFW_KEY_A && action == GLFW_PRESS)
+            {
+                float new_color[] = { 1,1,1,1 };
+                color_buffer.update_data(8, new_color);
+            }
+            if (key == GLFW_KEY_S && action == GLFW_PRESS)
+            {
+                auto color_data = std::vector<float>{
+                    1,0,1,1,
+                    1,0,0,1,
+                    0,1,0,1,
+                    0,0,1,1
+                };
+                color_buffer.set_new_data(color_data, GL_STATIC_DRAW);
+            }
 
-        auto model = VertexBuffer({ &data.position, &data.indices, &color_data });
+            // Run hello world example from Bullet Physics github.
+            if (key == GLFW_KEY_Q && action == GLFW_PRESS)
+            {
+                test_bullet();
+            }
 
-        float new_color[] = { 1,1,1,1 };
-        color_data.update_data(4, new_color);
+            // Exit program when ESC is pressed.
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+            {
+                window.set_close_flag();
+            }
+        });
 
+        // Start the main loop that draws a square with transform applied.
         while (!window.should_close())
         {
             window.clear({ 0,1,1,1 });
