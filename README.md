@@ -4,6 +4,13 @@ A test project for using OpenGL and Bullet Physics together, with latest support
 ## hello world example
 ![hello world](https://user-images.githubusercontent.com/39623255/131685890-35762f2a-ce82-44e1-ae11-8a75e731bd74.gif)
 
+## Project folder structure
+- root
+  - gl-bullet-practice
+    - modules - OpenGL and Bullet Physics wrapper classes as module interface unit
+    - resources - shaders written in GLSL
+    - sources - main.cpp which contains testbench code
+
 ## Project setting
 - Visual Studio 2022 Preview 3.1
 - c++latest as standard
