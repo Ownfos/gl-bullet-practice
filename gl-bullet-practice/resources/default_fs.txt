@@ -1,12 +1,13 @@
 #version 330 core
 out vec4 FragColor;
-in vec4 out_color;
 
-uniform vec4 color_multiplier;
+uniform vec4 color;
+
+in vec3 world_normal;
 
 void main()
 {
-    //FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-    //FragColor = out_color * color_multiplier;
-    FragColor = out_color;
+    vec3 light_dir = normalize(vec3(1, -1, 0.5));
+    float intensity = max(dot(world_normal, -light_dir), 0) + 0.5f;
+    FragColor = vec4((color * intensity).xyz, color.a);
 }

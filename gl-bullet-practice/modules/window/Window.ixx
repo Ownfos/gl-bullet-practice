@@ -78,6 +78,8 @@ export namespace ownfos::opengl
         {
             glfwMakeContextCurrent(window);
             glEnable(GL_DEPTH_TEST);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             // Not sure why, but glewInit() seems mandatory when we use multiple windows.
             glewExperimental = GL_TRUE;
