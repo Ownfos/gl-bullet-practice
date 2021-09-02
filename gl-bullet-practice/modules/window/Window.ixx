@@ -104,6 +104,18 @@ export namespace ownfos::opengl
             glfwSwapBuffers(window);
         }
 
+        int get_key_state(int key) const
+        {
+            return glfwGetKey(window, key);
+        }
+
+        glm::vec2 get_cursor_pos() const
+        {
+            double x, y;
+            glfwGetCursorPos(window, &x, &y);
+            return { x, y };
+        }
+
         void register_resize_handler(ResizeHandler&& handler)
         {
             resize_handlers.push_back(std::move(handler));

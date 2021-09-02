@@ -66,12 +66,12 @@ int main()
             .mass = 1.0f,
             .transform = {
                 .position = {4.5, 10, 0},
-                .rotation = btQuaternion{{0, 0, 1}, glm::radians(45.1f)} // Rotate 45.1 degrees around +Z axis
+                .rotation = {{0, 0, 1}, glm::radians(45.1f)} // Rotate 45.1 degrees around +Z axis
             }
         });
         world.add_rigid_body(object);
 
-        auto cam_pos = glm::vec3{ 2, 5,-60 };
+        auto cam_pos = glm::vec3{ -3, 10, -40 };
 
         window.register_key_handler([&](auto key, auto action) {
             // Camera movement
@@ -123,6 +123,12 @@ int main()
             draw_indexed(GL_TRIANGLES, 36, 0);
 
             window.swap_buffer();
+
+            if (window.get_key_state(GLFW_KEY_B) == GLFW_PRESS)
+            {
+                auto pos = window.get_cursor_pos();
+                std::cout << fmt::format("{}, {}\n", pos.x, pos.y);
+            }
 
             glfwPollEvents();
         }
