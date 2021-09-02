@@ -19,15 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GLMAdapter.ixx" />
     <ClCompile Include="modules\buffer\IndexBuffer.ixx" />
     <ClCompile Include="modules\buffer\VertexBuffer.ixx" />
     <ClCompile Include="modules\buffer\IBuffer.ixx" />
     <ClCompile Include="modules\buffer\BufferPreset.ixx" />
+    <ClCompile Include="modules\camera\Camera.ixx" />
     <ClCompile Include="modules\physics\DefaultDynamicsWorldComponents.ixx" />
     <ClCompile Include="modules\physics\DynamicsWorld.ixx" />
+    <ClCompile Include="modules\physics\GLMAdapter.ixx" />
     <ClCompile Include="modules\physics\IDynamicsWorldComponents.ixx" />
     <ClCompile Include="modules\physics\RigidBody.ixx" />
+    <ClCompile Include="modules\physics\Transform.ixx" />
     <ClCompile Include="modules\primitives\Cube.ixx" />
     <ClCompile Include="modules\primitives\Plane.ixx" />
     <ClCompile Include="modules\primitives\PrimitiveModelData.ixx" />
@@ -39,7 +41,6 @@
     <ClCompile Include="modules\window\GLFWInitializer.ixx" />
     <ClCompile Include="modules\window\Window.ixx" />
     <ClCompile Include="sources\main.cpp" />
-    <ClCompile Include="Transform.ixx" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\default_fs.txt" />

@@ -23,6 +23,8 @@ import DefaultDynamicsWorldComponents;
 
 import GLMAdapter;
 
+import Camera;
+
 using namespace ownfos::opengl;
 using namespace ownfos::primitives;
 using namespace ownfos::bullet;
@@ -42,7 +44,6 @@ int main()
         // Prepare a cube model.
         auto cube = create_cube_model_data();
         auto cube_model = BufferPreset({ &cube.position, &cube.normal, &cube.indices });
-
 
         // Create a new physics world with downward gravity.
         auto world_components = std::make_unique<DefaultDynamicsWorldComponents>();
@@ -71,22 +72,38 @@ int main()
         });
         world.add_rigid_body(object);
 
-        auto cam_pos = glm::vec3{ -3, 10, -40 };
+        // Prepare camera for view and projection matrix
+        auto camera = Camera{
+            .transform = {
+                .position = {-3, 10, -40}
+            },
+            .projection = Projection::perspective(
+                glm::radians(60.0f),
+                window.get_aspect_ratio(),
+                0.1f,
+                1000.0f
+            )
+        };
 
         window.register_key_handler([&](auto key, auto action) {
             // Camera movement
-            if (key == GLFW_KEY_UP) cam_pos.z += 0.5f;
-            if (key == GLFW_KEY_DOWN) cam_pos.z -= 0.5f;
-            if (key == GLFW_KEY_LEFT) cam_pos.x += 0.5f;
-            if (key == GLFW_KEY_RIGHT) cam_pos.x -= 0.5f;
-            if (key == GLFW_KEY_Z) cam_pos.y += 0.5f;
-            if (key == GLFW_KEY_X) cam_pos.y -= 0.5f;
+            if (key == GLFW_KEY_UP) camera.transform.position += {0, 0, 0.5f};
+            if (key == GLFW_KEY_DOWN) camera.transform.position -= {0, 0, 0.5f};
+            if (key == GLFW_KEY_LEFT) camera.transform.position += {0.5f, 0, 0};
+            if (key == GLFW_KEY_RIGHT) camera.transform.position -= {0.5f, 0, 0};
+            if (key == GLFW_KEY_Z) camera.transform.position += {0, 0.5f, 0};
+            if (key == GLFW_KEY_X) camera.transform.position -= {0, 0.5f, 0};
 
             // Exit program when ESC is pressed.
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
             {
                 window.set_close_flag();
             }
+        });
+
+        // Prevent rendered images from being stretched w.r.t. new window size.
+        window.register_resize_handler([&](auto width, auto height) {
+            //camera.projection = Projection::perspective(glm::radians(60.0f), window.get_aspect_ratio(), 0.1f, 1000.0f);
         });
 
         // Start the main loop that draws a square with transform applied.
@@ -97,15 +114,11 @@ int main()
             window.clear({ 1,1,1,1 });
 
             // Set up camera that follows the falling mini cube
-            auto cam_target = to_glm(object->get_world_transform().getOrigin());
-            auto cam_up = glm::vec3{ 0,1,0 };
-
-            auto view = glm::lookAt(cam_pos, cam_target, cam_up);
-            auto projection = glm::perspective(glm::radians(60.0f), window.get_aspect_ratio(), 0.1f, 1000.0f);
+            //camera.view = View::look_target(cam_pos, to_glm(object->get_world_transform().getOrigin()));
+            camera.transform.look_at(object->get_world_transform().getOrigin());
 
             shader.use();
-            shader.set_uniform("view", view);
-            shader.set_uniform("projection", projection);
+            shader.set_uniform("camera", camera.get_matrix());
 
             // Now we will draw ground and falling object with single cube model.
             // This works because the btCollisionShape used by these rigid bodies
