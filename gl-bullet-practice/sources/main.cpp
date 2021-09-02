@@ -103,7 +103,7 @@ int main()
 
         // Prevent rendered images from being stretched w.r.t. new window size.
         window.register_resize_handler([&](auto width, auto height) {
-            //camera.projection = Projection::perspective(glm::radians(60.0f), window.get_aspect_ratio(), 0.1f, 1000.0f);
+            camera.projection = Projection::perspective(glm::radians(60.0f), window.get_aspect_ratio(), 0.1f, 1000.0f);
         });
 
         // Start the main loop that draws a square with transform applied.
