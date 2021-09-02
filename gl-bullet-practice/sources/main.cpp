@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 #include <array>
+#include <ctime>
 
 import GLFWInitializer;
 import Window;
@@ -75,7 +76,7 @@ int main()
         // Prepare camera for view and projection matrix
         auto camera = Camera{
             .transform = {
-                .position = {-3, 10, -40}
+                .position = {-3, -5, -40}
             },
             .projection = Projection::perspective(
                 glm::radians(45.0f),
@@ -116,6 +117,7 @@ int main()
             // Set up camera that follows the falling mini cube
             camera.transform.look_at(object->get_world_transform().getOrigin());
 
+
             shader.use();
             shader.set_uniform("camera", camera.get_matrix());
 
@@ -124,14 +126,14 @@ int main()
             // is btBoxShape with half-width of 1, which is identical to the cube_model data we've generated.
             cube_model.use();
 
-            // Draw the falling mini cube
-            shader.set_uniform("world", object->get_world_transform_matrix());
-            shader.set_uniform("color", glm::vec4{ 0.5f, 0.7f, 0.9f, 1.0f });
-            draw_indexed(GL_TRIANGLES, 36, 0);
-
             // Draw the ground
             shader.set_uniform("world", ground->get_world_transform_matrix());
             shader.set_uniform("color", glm::vec4{ 1.0f, 0.0f, 0.0f, 0.7f });
+            draw_indexed(GL_TRIANGLES, 36, 0);
+
+            // Draw the falling mini cube
+            shader.set_uniform("world", object->get_world_transform_matrix());
+            shader.set_uniform("color", glm::vec4{ 0.5f, 0.7f, 0.9f, 1.0f });
             draw_indexed(GL_TRIANGLES, 36, 0);
 
             // Test screen to world coordinate conversion.

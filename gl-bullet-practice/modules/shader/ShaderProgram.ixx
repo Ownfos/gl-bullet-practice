@@ -3,8 +3,9 @@ module;
 #include <gl/glew.h>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-#include <stdexcept>
 #include <fmt/format.h>
+#include <stdexcept>
+#include <unordered_map>
 
 export module ShaderProgram;
 
@@ -72,7 +73,19 @@ export namespace ownfos::opengl
     private:
         int uniform_location(std::string_view variable_name)
         {
-            return glGetUniformLocation(shader_program, variable_name.data());
+            if (uniform_location_cache.find(variable_name) == uniform_location_cache.end())
+            {
+                auto location = glGetUniformLocation(shader_program, variable_name.data());
+
+                if (location == -1)
+                {
+                    throw std::runtime_error(fmt::format("[ShaderProgram] Invalid uniform variable name: {}", variable_name));
+                }
+
+                uniform_location_cache.emplace(variable_name, location);
+            }
+
+            return uniform_location_cache.at(variable_name);
         }
 
         void compile(unsigned int& shader, const IShaderSource* source)
@@ -132,5 +145,7 @@ export namespace ownfos::opengl
         unsigned int vertex_shader;
         unsigned int fragment_shader;
         unsigned int shader_program;
+
+        std::unordered_map<std::string_view, int> uniform_location_cache;
     };
 } // namespace ownfos::opengl

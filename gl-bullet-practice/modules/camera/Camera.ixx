@@ -70,7 +70,8 @@ export namespace ownfos::opengl
             auto camera_near_plane_point = glm::vec4(screen_point.x, screen_point.y, projection.get_near_plane_distance(), 1.0f);
             auto world_point = inverse_transform * camera_near_plane_point;
 
-            // Note that world_point is using homogeneous coordinate.
+            // Since world_point is in homogeneous coordinate, we need to convert it
+            // to cartesian coordinate (which we want) by dividing everything with w component.
             return world_point / world_point.w;
         }
     };
