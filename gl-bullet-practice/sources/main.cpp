@@ -21,6 +21,8 @@ import Cube;
 import DynamicsWorld;
 import DefaultDynamicsWorldComponents;
 
+import GLMAdapter;
+
 using namespace ownfos::opengl;
 using namespace ownfos::primitives;
 using namespace ownfos::bullet;
@@ -48,13 +50,25 @@ int main()
         world.set_gravity({ 0, -10, 0 });
 
         // Place a box shaped ground below.
-        auto ground_shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 });
-        auto ground = std::make_shared<RigidBody>(ground_shape, 0, btVector3{ 0, -11, 0 }, btQuaternion{ 0,0,0, 1 }, btVector3{ 5, 1, 5 });
+        // Note that the default mass value is 0, which means the object is static.
+        auto ground = std::make_shared<RigidBody>(RigidBodyConfig{
+            .shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 }),
+            .transform = {
+                .position = {0, -11, 0},
+                .scale = {5, 1, 5}
+            }
+        });
         world.add_rigid_body(ground);
 
-        // Place a sphere above the ground.
-        auto object_shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 });
-        auto object = std::make_shared<RigidBody>(object_shape, 1.0f, btVector3{ 4.5, 10, 0 }, btQuaternion{ btVector3{0, 0, 1}, glm::radians(45.1f) }, btVector3{ 1, 1, 1 });
+        // Place a mini cube above the ground.
+        auto object = std::make_shared<RigidBody>(RigidBodyConfig{
+            .shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 }),
+            .mass = 1.0f,
+            .transform = {
+                .position = {4.5, 10, 0},
+                .rotation = btQuaternion{{0, 0, 1}, glm::radians(45.1f)} // Rotate 45.1 degrees around +Z axis
+            }
+        });
         world.add_rigid_body(object);
 
         auto cam_pos = glm::vec3{ 2, 5,-60 };
@@ -83,9 +97,7 @@ int main()
             window.clear({ 1,1,1,1 });
 
             // Set up camera that follows the falling mini cube
-            auto object_origin = object->get_world_transform().getOrigin();
-
-            auto cam_target = glm::vec3{ object_origin.getX(), object_origin.getY(), object_origin.getZ() };
+            auto cam_target = to_glm(object->get_world_transform().getOrigin());
             auto cam_up = glm::vec3{ 0,1,0 };
 
             auto view = glm::lookAt(cam_pos, cam_target, cam_up);

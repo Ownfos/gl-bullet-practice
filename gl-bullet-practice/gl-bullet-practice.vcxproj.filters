@@ -90,6 +90,12 @@
     <ClCompile Include="modules\physics\DefaultDynamicsWorldComponents.ixx">
       <Filter>모듈\physics</Filter>
     </ClCompile>
+    <ClCompile Include="Transform.ixx">
+      <Filter>모듈\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLMAdapter.ixx">
+      <Filter>모듈\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\default_fs.txt">

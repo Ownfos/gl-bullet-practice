@@ -7,32 +7,41 @@ module;
 
 export module RigidBody;
 
+export import Transform;
+
 export namespace ownfos::bullet
 {
+    struct RigidBodyConfig
+    {
+        std::shared_ptr<btCollisionShape> shape;
+        btScalar mass = 0;
+        Transform transform = {};
+    };
+
     class RigidBody
     {
     public:
-        RigidBody(std::shared_ptr<btCollisionShape> shape, btScalar mass, btVector3 position, btQuaternion rotation, btVector3 scale)
-            : shape(shape), scale(scale)
+        RigidBody(const RigidBodyConfig& config)
+            : shape(config.shape), scale(config.transform.scale)
         {
             auto inertia = btVector3{ 0, 0, 0 };
 
-            if (mass > 0.0f)
+            if (config.mass > 0.0f)
             {
-                shape->calculateLocalInertia(mass, inertia);
+                shape->calculateLocalInertia(config.mass, inertia);
             }
 
             // Set position and rotation
-            auto transform = btTransform();
-            transform.setIdentity();
-            transform.setOrigin(position);
-            transform.setRotation(rotation);
+            auto bullet_transform = btTransform();
+            bullet_transform.setIdentity();
+            bullet_transform.setOrigin(config.transform.position);
+            bullet_transform.setRotation(config.transform.rotation);
 
             // Set scale
             shape->setLocalScaling(scale);
 
-            motion_state = new btDefaultMotionState(transform);
-            rigid_body = new btRigidBody({ mass, motion_state, shape.get(), inertia });
+            motion_state = new btDefaultMotionState(bullet_transform);
+            rigid_body = new btRigidBody({ config.mass, motion_state, shape.get(), inertia });
         }
 
         ~RigidBody()
@@ -80,8 +89,12 @@ export namespace ownfos::bullet
         }
 
     private:
+        // Keep reference to the pointer so that shape doesn't get destroyed while rigid body is alive
         std::shared_ptr<btCollisionShape> shape;
+
+        // Keep the initial scale value, so that we can make scaling affect get_world_transform_matrix()
         btVector3 scale;
+
         btRigidBody* rigid_body = nullptr;
         btMotionState* motion_state = nullptr;
     };

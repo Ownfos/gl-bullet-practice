@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GLMAdapter.ixx" />
     <ClCompile Include="modules\buffer\IndexBuffer.ixx" />
     <ClCompile Include="modules\buffer\VertexBuffer.ixx" />
     <ClCompile Include="modules\buffer\IBuffer.ixx" />
@@ -38,6 +39,7 @@
     <ClCompile Include="modules\window\GLFWInitializer.ixx" />
     <ClCompile Include="modules\window\Window.ixx" />
     <ClCompile Include="sources\main.cpp" />
+    <ClCompile Include="Transform.ixx" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\default_fs.txt" />
