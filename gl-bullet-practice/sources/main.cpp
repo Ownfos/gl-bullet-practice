@@ -49,12 +49,12 @@ int main()
 
         // Place a box shaped ground below.
         auto ground_shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 });
-        auto ground = std::make_shared<RigidBody>(ground_shape, 0, btVector3{ 0, -11, 0 }, btVector3{ 5, 1, 5 });
+        auto ground = std::make_shared<RigidBody>(ground_shape, 0, btVector3{ 0, -11, 0 }, btQuaternion{ 0,0,0, 1 }, btVector3{ 5, 1, 5 });
         world.add_rigid_body(ground);
 
         // Place a sphere above the ground.
         auto object_shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 });
-        auto object = std::make_shared<RigidBody>(object_shape, 1.0f, btVector3{ 5, 10, 0 }, btVector3{ 1, 1, 1 });
+        auto object = std::make_shared<RigidBody>(object_shape, 1.0f, btVector3{ 4.5, 10, 0 }, btQuaternion{ btVector3{0, 0, 1}, glm::radians(45.1f) }, btVector3{ 1, 1, 1 });
         world.add_rigid_body(object);
 
         auto cam_pos = glm::vec3{ 2, 5,-60 };

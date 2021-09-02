@@ -12,7 +12,7 @@ export namespace ownfos::bullet
     class RigidBody
     {
     public:
-        RigidBody(std::shared_ptr<btCollisionShape> shape, btScalar mass, btVector3 position, btVector3 scale)
+        RigidBody(std::shared_ptr<btCollisionShape> shape, btScalar mass, btVector3 position, btQuaternion rotation, btVector3 scale)
             : shape(shape), scale(scale)
         {
             auto inertia = btVector3{ 0, 0, 0 };
@@ -26,6 +26,7 @@ export namespace ownfos::bullet
             auto transform = btTransform();
             transform.setIdentity();
             transform.setOrigin(position);
+            transform.setRotation(rotation);
 
             // Set scale
             shape->setLocalScaling(scale);
