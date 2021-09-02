@@ -78,7 +78,7 @@ int main()
                 .position = {-3, 10, -40}
             },
             .projection = Projection::perspective(
-                glm::radians(60.0f),
+                glm::radians(45.0f),
                 window.get_aspect_ratio(),
                 0.1f,
                 1000.0f
@@ -114,7 +114,6 @@ int main()
             window.clear({ 1,1,1,1 });
 
             // Set up camera that follows the falling mini cube
-            //camera.view = View::look_target(cam_pos, to_glm(object->get_world_transform().getOrigin()));
             camera.transform.look_at(object->get_world_transform().getOrigin());
 
             shader.use();
@@ -132,16 +131,22 @@ int main()
 
             // Draw the ground
             shader.set_uniform("world", ground->get_world_transform_matrix());
-            shader.set_uniform("color", glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+            shader.set_uniform("color", glm::vec4{ 1.0f, 0.0f, 0.0f, 0.7f });
             draw_indexed(GL_TRIANGLES, 36, 0);
 
-            window.swap_buffer();
-
+            // Test screen to world coordinate conversion.
+            // See how the center of the tiny green cube matches with the cursor's tip.
             if (window.get_key_state(GLFW_KEY_B) == GLFW_PRESS)
             {
-                auto pos = window.get_cursor_pos();
-                std::cout << fmt::format("{}, {}\n", pos.x, pos.y);
+                auto screen_pos = window.get_normalized_cursor_pos();
+                auto world_pos = camera.screen_to_world_point(screen_pos);
+
+                shader.set_uniform("world", glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(world_pos)), { 0.001f, 0.001f, 0.001f }));
+                shader.set_uniform("color", glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+                draw_indexed(GL_TRIANGLES, 36, 0);
             }
+
+            window.swap_buffer();
 
             glfwPollEvents();
         }

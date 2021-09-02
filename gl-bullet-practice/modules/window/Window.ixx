@@ -109,10 +109,24 @@ export namespace ownfos::opengl
             return glfwGetKey(window, key);
         }
 
-        glm::vec2 get_cursor_pos() const
+        // Returns the cursor's coordinate in normalized space (-1 to +1),
+        // where left-bottom corner corresponds to (-1, -1)
+        glm::vec2 get_normalized_cursor_pos() const
         {
+            // Get the cursor coordinate in pixels, where left-top corner is (0, 0) and right-bottom is (width, height) in pixels.
             double x, y;
             glfwGetCursorPos(window, &x, &y);
+
+            // Normalize the coordinate, so that it ranges from -1 to +1.
+            // 
+            // Note that y-axis of raw cursor pos points down.
+            // This means that the y value becomes equal to the
+            // window height (in pixels) when the cursor reaches the bottom.
+            // 
+            // We need to invert the direction by adding minus sign for y coordinate.
+            x = x / width * 2.0f - 1.0f;
+            y = -(y / height * 2.0f - 1.0f);
+
             return { x, y };
         }
 
