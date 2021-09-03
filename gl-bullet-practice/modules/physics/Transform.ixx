@@ -16,7 +16,7 @@ export namespace ownfos::bullet
 
         void look_at(const btVector3& target)
         {
-            auto forward = btVector3{ 0, 0, 1 };
+            auto forward = btVector3{ 0, 0, -1 };
             auto look_direction = (target - position).normalized();
 
             auto rotation_axis = forward.cross(look_direction);
@@ -27,7 +27,7 @@ export namespace ownfos::bullet
 
         btVector3 forward() const
         {
-            return quatRotate(rotation, { 0, 0, 1 });
+            return quatRotate(rotation, { 0, 0, -1 });
         }
 
         btVector3 up() const
