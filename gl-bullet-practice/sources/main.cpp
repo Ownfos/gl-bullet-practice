@@ -30,6 +30,18 @@ using namespace ownfos::opengl;
 using namespace ownfos::primitives;
 using namespace ownfos::bullet;
 
+// Custom format function bullet vector type
+template<>
+struct fmt::formatter<btVector3> : fmt::formatter<std::string_view>
+{
+    template<typename FormatContext>
+    auto format(const btVector3& v, FormatContext& ctx)
+    {
+        auto str = fmt::format("({:5.2f}, {:5.2f}, {:5.2f})", v.x(), v.y(), v.z());
+        return fmt::formatter<std::string_view>::format(str, ctx);
+    }
+};
+
 int main()
 {
     try
@@ -146,6 +158,39 @@ int main()
                 shader.set_uniform("world", glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(world_pos)), { 0.001f, 0.001f, 0.001f }));
                 shader.set_uniform("color", glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
                 draw_indexed(GL_TRIANGLES, 36, 0);
+
+                // All hit raycast
+                {
+                    auto result = world.raycast_all(Ray::from_screenpoint(camera, screen_pos));
+
+                    if (result.has_value())
+                    {
+                        for (const auto& hit_info : result.value())
+                        {
+                            std::cout << fmt::format(
+                                "[Raycast Hit All] point: {} world normal: {} pos: {}\n",
+                                hit_info.position,
+                                hit_info.normal,
+                                hit_info.object->get_world_transform().getOrigin()
+                            );
+                        }
+                    }
+                }
+
+                // Closest raycast
+                {
+                    auto result = world.raycast_closest(Ray::from_screenpoint(camera, screen_pos));
+
+                    if (result.has_value())
+                    {
+                        std::cout << fmt::format(
+                            "[Raycast Hit Closest] point: {} world normal: {} pos: {}\n",
+                            result->position,
+                            result->normal,
+                            result->object->get_world_transform().getOrigin()
+                        );
+                    }
+                }
             }
 
             window.swap_buffer();

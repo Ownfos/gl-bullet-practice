@@ -28,6 +28,8 @@
     <ClCompile Include="modules\physics\DynamicsWorld.ixx" />
     <ClCompile Include="modules\physics\GLMAdapter.ixx" />
     <ClCompile Include="modules\physics\IDynamicsWorldComponents.ixx" />
+    <ClCompile Include="modules\physics\Ray.ixx" />
+    <ClCompile Include="modules\physics\HitInfo.ixx" />
     <ClCompile Include="modules\physics\RigidBody.ixx" />
     <ClCompile Include="modules\physics\Transform.ixx" />
     <ClCompile Include="modules\primitives\Cube.ixx" />

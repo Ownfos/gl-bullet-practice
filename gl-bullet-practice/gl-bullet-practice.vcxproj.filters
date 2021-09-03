@@ -102,6 +102,12 @@
     <ClCompile Include="modules\camera\Camera.ixx">
       <Filter>모듈\camera</Filter>
     </ClCompile>
+    <ClCompile Include="modules\physics\Ray.ixx">
+      <Filter>모듈\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\HitInfo.ixx">
+      <Filter>모듈\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\default_fs.txt">

@@ -57,17 +57,17 @@ export namespace ownfos::opengl
 
         glm::mat4 get_matrix() const
         {
-            auto pos = to_glm(transform.position);
-            auto forward = to_glm(transform.forward());
+            auto pos = bt2glm(transform.position);
+            auto forward = bt2glm(transform.forward());
             auto view = glm::lookAt(pos, pos + forward, { 0, 1, 0 });
 
             return projection.get_matrix() * view;
         }
 
-        glm::vec3 screen_to_world_point(const glm::vec2& screen_point)
+        glm::vec3 screen_to_world_point(const glm::vec2& normalized_screen_point) const
         {
             auto inverse_transform = glm::inverse(get_matrix());
-            auto camera_near_plane_point = glm::vec4(screen_point.x, screen_point.y, projection.get_near_plane_distance(), 1.0f);
+            auto camera_near_plane_point = glm::vec4(normalized_screen_point.x, normalized_screen_point.y, projection.get_near_plane_distance(), 1.0f);
             auto world_point = inverse_transform * camera_near_plane_point;
 
             // Since world_point is in homogeneous coordinate, we need to convert it
