@@ -22,10 +22,26 @@ export namespace ownfos::opengl
     class Window
     {
     public:
-        using ResizeHandler = std::function<void(int, int)>;
-        using KeyHandler = std::function<void(int, int)>;
-        using MouseButtonHandler = std::function<void(int, int, int)>;
-        using CursorPositionHandler = std::function<void(double, double)>;
+        // Parameters:
+        // - width: horizontal size of window in pixels
+        // - height: vertical size of window in pixels
+        using ResizeHandler = std::function<void(int /* width */, int /* height */)>;
+
+        // Parameters:
+        // - key: GLFW_KEY_XXX corresponding to the pressed/released key (e.g. GLFW_KEY_F if key 'f' was pressed)
+        // - action: GLFW_PRESS or GLFW_RELEASE
+        using KeyHandler = std::function<void(int /* key */, int /* action */)>;
+
+        // Parameters:
+        // - button: GLFW_MOUSE_BUTTON_XXX corresponding to the pressed/released mouse button (e.g. GLFW_MOUSE_BUTTON_LEFT if mouse left button was clicked)
+        // - action: GLFW_PRESS or GLFW_RELEASE
+        // - mods: bitmask corresponding to zero or more GLFW_MOD_XXX flags 'OR'ed together (e.g. GLFW_MOD_SHIFT if any shift key was pressed at the moment)
+        using MouseButtonHandler = std::function<void(int /* button */, int /* action */, int /* mods */)>;
+
+        // Parameters:
+        // - x: distance in pixels from the left edge of this window
+        // - y: distance in pixels from the top edge of this window
+        using CursorPositionHandler = std::function<void(double /* x */, double /* y */)>;
 
         Window(int width, int height, const std::string& title, GLFWContextVersion context_version = { 3,3 })
             : width(width), height(height)
@@ -104,9 +120,16 @@ export namespace ownfos::opengl
             glfwSwapBuffers(window);
         }
 
+        // Returns the lastly updated key state (GLFW_PRESS or GLFW_RELEASE)
         int get_key_state(int key) const
         {
             return glfwGetKey(window, key);
+        }
+
+        // Returns the lastly updated mouse button state (GLFW_PRESS or GLFW_RELEASE)
+        int get_mouse_button_state(int button) const
+        {
+            return glfwGetMouseButton(window, button);
         }
 
         // Returns the cursor's coordinate in normalized space (-1 to +1),
@@ -128,6 +151,13 @@ export namespace ownfos::opengl
             y = -(y / height * 2.0f - 1.0f);
 
             return { x, y };
+        }
+
+        // Enable or disable mouse cursor.
+        // When cursor is disabled, it becomes invisible and locked inside the window.
+        void set_cursor_enabled(bool enabled)
+        {
+            glfwSetInputMode(window, GLFW_CURSOR, enabled ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
         }
 
         void register_resize_handler(ResizeHandler&& handler)
