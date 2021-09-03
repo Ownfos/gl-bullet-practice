@@ -4,6 +4,12 @@ A test project for using OpenGL and Bullet Physics together, with latest support
 ## hello world example
 ![hello world](https://user-images.githubusercontent.com/39623255/131685890-35762f2a-ce82-44e1-ae11-8a75e731bd74.gif)
 
+## camera movement with mouse and keyboard
+![camera movement](https://user-images.githubusercontent.com/39623255/132068145-f1ecb991-5be3-47c7-b9a2-fc5979f69055.gif)
+
+## apply force along normal vector or camera ray direction
+![apply force](https://user-images.githubusercontent.com/39623255/132068167-4fa0fde3-b8ec-4905-b8be-bd37e687da9a.gif)
+
 ## Project folder structure
 - root
   - gl-bullet-practice
