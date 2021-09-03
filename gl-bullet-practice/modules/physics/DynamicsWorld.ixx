@@ -55,10 +55,6 @@ export namespace ownfos::bullet
             // If the btRigidBody instance gets deallocated before we remove it,
             // world->removeCollisionObject(...) will cause an invalid access error.
             rigid_bodies.push_back(rigid_body);
-
-            // Map the btRigidBody* to ownfos::bullet::RigidBody*
-            // so that we can get RigidBody* from raycast result, which only gives btRigidBody*.
-            col_to_rigid.emplace(rigid_body->get_body(), rigid_body.get());
         }
 
         void step_simulation(btScalar time_step, int max_substep)
@@ -85,8 +81,11 @@ export namespace ownfos::bullet
 
             for (int i = 0; i < result.m_hitFractions.size(); ++i)
             {
-                hit_info.push_back(HitInfo{
-                    .object = col_to_rigid.at(result.m_collisionObjects[i]),
+                hit_info.push_back({
+                    // RigidBody sets user pointer to its own 'this' pointer, so we can guarantee that this cast is valid.
+                    .object = static_cast<RigidBody*>(result.m_collisionObjects[i]->getUserPointer()),
+
+                    // Each hit point is calculated as interpolation of start and end point of the given ray.
                     .position = ray.get_lerped_point(result.m_hitFractions[i]),
                     .normal = result.m_hitNormalWorld[i]
                 });
@@ -107,7 +106,9 @@ export namespace ownfos::bullet
             else
             {
                 return HitInfo{
-                    .object = col_to_rigid.at(result.m_collisionObject),
+                    // RigidBody sets user pointer to its own 'this' pointer, so we can guarantee that this cast is valid.
+                    .object = static_cast<RigidBody*>(result.m_collisionObject->getUserPointer()),
+
                     .position = result.m_hitPointWorld,
                     .normal = result.m_hitNormalWorld
                 };
@@ -121,7 +122,6 @@ export namespace ownfos::bullet
         // Reference to all rigid bodies added to this physics world.
         // This assures that all btRigidBody instances are not deleted until we remove them from this world.
         std::vector<std::shared_ptr<RigidBody>> rigid_bodies;
-        std::unordered_map<const btCollisionObject*, RigidBody*> col_to_rigid;
 
         // The physics world where simulation happens.
         btDynamicsWorld* world = nullptr;
