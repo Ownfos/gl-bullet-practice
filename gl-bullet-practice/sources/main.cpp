@@ -47,7 +47,7 @@ int main()
     try
     {
         auto init = GLFWInitializer();
-        auto window = Window(600, 600, "hello, world!");
+        auto window = Window(800, 600, "hello, world!");
 
         // Prepare shader.
         auto vs = ShaderSourceFromFile("resources/default_vs.txt");
@@ -69,26 +69,30 @@ int main()
             .shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 }),
             .transform = {
                 .position = {0, -11, 0},
-                .scale = {5, 1, 5}
+                .scale = {10, 0.2, 10}
             }
         });
         world.add_rigid_body(ground);
 
         // Place a mini cube above the ground.
-        auto object = std::make_shared<RigidBody>(RigidBodyConfig{
+        auto cube_object = std::make_shared<RigidBody>(RigidBodyConfig{
             .shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 }),
             .mass = 1.0f,
             .transform = {
                 .position = {4.5, 10, 0},
-                .rotation = {{0, 0, 1}, glm::radians(45.1f)} // Rotate 45.1 degrees around +Z axis
+                .rotation = {{0, 0, 1}, glm::radians(45.1f)}, // Rotate 45.1 degrees around +Z axis
+                .scale = {1, 0.5, 0.5}
             }
         });
-        world.add_rigid_body(object);
+        world.add_rigid_body(cube_object);
 
         // Prepare camera for view and projection matrix
+        auto cam_yaw = 0.0f;
+        auto cam_pitch = 0.0f;
         auto camera = Camera{
             .transform = {
-                .position = {-3, -5, -40}
+                .position = {0, 0, 40},
+                .rotation = {cam_yaw, cam_pitch, 0.0f}
             },
             .projection = Projection::perspective(
                 glm::radians(45.0f),
@@ -97,15 +101,13 @@ int main()
                 1000.0f
             )
         };
+        auto prev_cursor = window.get_normalized_cursor_pos();
+        window.set_cursor_enabled(false);
 
         window.register_key_handler([&](auto key, auto action) {
-            // Camera movement
-            if (key == GLFW_KEY_UP) camera.transform.position += {0, 0, 0.5f};
-            if (key == GLFW_KEY_DOWN) camera.transform.position -= {0, 0, 0.5f};
-            if (key == GLFW_KEY_LEFT) camera.transform.position += {0.5f, 0, 0};
-            if (key == GLFW_KEY_RIGHT) camera.transform.position -= {0.5f, 0, 0};
-            if (key == GLFW_KEY_Z) camera.transform.position += {0, 0.5f, 0};
-            if (key == GLFW_KEY_X) camera.transform.position -= {0, 0.5f, 0};
+            // Cursor activation
+            if (key == GLFW_KEY_LEFT_ALT && action == GLFW_PRESS) window.set_cursor_enabled(true);
+            if (key == GLFW_KEY_LEFT_ALT && action == GLFW_RELEASE) window.set_cursor_enabled(false);
 
             // Exit program when ESC is pressed.
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -122,78 +124,103 @@ int main()
         // Start the main loop that draws a square with transform applied.
         while (!window.should_close())
         {
-            world.step_simulation(1.0f / 60.0f, 10);
-
-            window.clear({ 1,1,1,1 });
-
-            // Set up camera that follows the falling mini cube
-            camera.transform.look_at(object->get_world_transform().getOrigin());
-
-
-            shader.use();
-            shader.set_uniform("camera", camera.get_matrix());
-
-            // Now we will draw ground and falling object with single cube model.
-            // This works because the btCollisionShape used by these rigid bodies
-            // is btBoxShape with half-width of 1, which is identical to the cube_model data we've generated.
-            cube_model.use();
-
-            // Draw the ground
-            shader.set_uniform("world", ground->get_world_transform_matrix());
-            shader.set_uniform("color", glm::vec4{ 1.0f, 0.0f, 0.0f, 0.7f });
-            draw_indexed(GL_TRIANGLES, 36, 0);
-
-            // Draw the falling mini cube
-            shader.set_uniform("world", object->get_world_transform_matrix());
-            shader.set_uniform("color", glm::vec4{ 0.5f, 0.7f, 0.9f, 1.0f });
-            draw_indexed(GL_TRIANGLES, 36, 0);
-
-            // Test screen to world coordinate conversion.
-            // See how the center of the tiny green cube matches with the cursor's tip.
-            if (window.get_key_state(GLFW_KEY_B) == GLFW_PRESS)
+            // Update world
             {
-                auto screen_pos = window.get_normalized_cursor_pos();
-                auto world_pos = camera.screen_to_world_point(screen_pos);
-
-                shader.set_uniform("world", glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(world_pos)), { 0.001f, 0.001f, 0.001f }));
-                shader.set_uniform("color", glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
-                draw_indexed(GL_TRIANGLES, 36, 0);
-
-                // All hit raycast
+                // Control camera with mouse
                 {
-                    auto result = world.raycast_all(Ray::from_screenpoint(camera, screen_pos));
+                    auto current_cursor = window.get_normalized_cursor_pos();
 
-                    if (result.has_value())
+                    if (window.get_key_state(GLFW_KEY_LEFT_ALT) == GLFW_RELEASE)
                     {
-                        for (const auto& hit_info : result.value())
-                        {
-                            std::cout << fmt::format(
-                                "[Raycast Hit All] point: {} world normal: {} pos: {}\n",
-                                hit_info.position,
-                                hit_info.normal,
-                                hit_info.object->get_world_transform().getOrigin()
-                            );
-                        }
+                        // Camera rotation
+                        constexpr float cam_rotation_speed = glm::radians(35.0f);
+                        auto cursor_movement = current_cursor - prev_cursor;
+
+                        cam_yaw -= cursor_movement.x * cam_rotation_speed;
+                        cam_pitch += cursor_movement.y * cam_rotation_speed;
+
+                        camera.transform.rotation = { cam_yaw, cam_pitch, 0.0f };
+
+                        // Camera movement
+                        constexpr float cam_movement_speed = 0.2f;
+                        if (window.get_key_state(GLFW_KEY_W) == GLFW_PRESS) camera.transform.position += camera.transform.forward() * cam_movement_speed;
+                        if (window.get_key_state(GLFW_KEY_S) == GLFW_PRESS) camera.transform.position -= camera.transform.forward() * cam_movement_speed;
+                        if (window.get_key_state(GLFW_KEY_D) == GLFW_PRESS) camera.transform.position += camera.transform.right() * cam_movement_speed;
+                        if (window.get_key_state(GLFW_KEY_A) == GLFW_PRESS) camera.transform.position -= camera.transform.right() * cam_movement_speed;
+                        if (window.get_key_state(GLFW_KEY_SPACE) == GLFW_PRESS) camera.transform.position += {0, 0.2, 0} * cam_movement_speed;
+                        if (window.get_key_state(GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camera.transform.position -= {0, 0.2, 0} * cam_movement_speed;
                     }
+
+                    prev_cursor = current_cursor;
                 }
 
-                // Closest raycast
+                // Test screen to world coordinate conversion, raycast, and force application
                 {
-                    auto result = world.raycast_closest(Ray::from_screenpoint(camera, screen_pos));
+                    // Coordinate conversion from normalized screen space to world space
+                    auto screen_pos = window.get_normalized_cursor_pos();
+                    auto world_pos = camera.screen_to_world_point(screen_pos);
+
+                    // Find the closest object
+                    auto ray = Ray::from_screenpoint(camera, screen_pos);
+                    auto result = world.raycast_closest(ray);
 
                     if (result.has_value())
                     {
                         std::cout << fmt::format(
-                            "[Raycast Hit Closest] point: {} world normal: {} pos: {}\n",
+                            "[Raycast Hit Closest] world position: {} world normal: {}\n",
                             result->position,
-                            result->normal,
-                            result->object->get_world_transform().getOrigin()
+                            result->normal
                         );
+
+                        // Pull object
+                        if (window.get_mouse_button_state(GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+                        {
+                            // Apply a force parallel to the normal vector of the selected point
+                            auto force_point = result->position - result->object->get_transform().position;
+                            auto force = result->normal * 10.0f;
+
+                            result->object->apply_force(force, force_point);
+                        }
+
+                        // Push object
+                        if (window.get_mouse_button_state(GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+                        {
+                            // Apply a force parallel to the ray direction
+                            auto force_point = result->position - result->object->get_transform().position;
+                            auto force = ray.get_direction() * 10.0f;
+
+                            result->object->apply_force(force, force_point);
+                        }
                     }
                 }
+
+                world.step_simulation(1.0f / 60.0f, 10);
             }
 
-            window.swap_buffer();
+            // Render
+            {
+                window.clear({ 1,1,1,1 });
+
+                shader.use();
+                shader.set_uniform("camera", camera.get_matrix());
+
+                // Now we will draw ground and falling object with single cube model.
+                // This works because the btCollisionShape used by these rigid bodies
+                // is btBoxShape with half-width of 1, which is identical to the cube_model data we've generated.
+                cube_model.use();
+
+                // Draw the falling mini cube
+                shader.set_uniform("world", cube_object->get_world_transform_matrix());
+                shader.set_uniform("color", glm::vec4{ 0.5f, 0.7f, 0.9f, 1.0f });
+                draw_indexed(GL_TRIANGLES, 36, 0);
+
+                // Draw the ground
+                shader.set_uniform("world", ground->get_world_transform_matrix());
+                shader.set_uniform("color", glm::vec4{ 1.0f, 0.0f, 0.0f, 0.7f });
+                draw_indexed(GL_TRIANGLES, 36, 0);
+
+                window.swap_buffer();
+            }
 
             glfwPollEvents();
         }

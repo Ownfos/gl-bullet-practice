@@ -42,6 +42,10 @@ export namespace ownfos::bullet
 
             motion_state = new btDefaultMotionState(bullet_transform);
             rigid_body = new btRigidBody({ config.mass, motion_state, shape.get(), inertia });
+
+            // Save this pointer for future reference from btRigidBody to ownfos::bullet::RigidBody.
+            // Used by ownfos::bullet::DynamicsWorld to get RigidBody instance from raycast result.
+            rigid_body->setUserPointer(this);
         }
 
         ~RigidBody()
@@ -74,6 +78,16 @@ export namespace ownfos::bullet
             return transform;
         }
 
+        Transform get_transform() const
+        {
+            auto bullet_transform = get_world_transform();
+            return {
+                .position = bullet_transform.getOrigin(),
+                .rotation = bullet_transform.getRotation(),
+                .scale = scale
+            };
+        }
+
         glm::mat4 get_world_transform_matrix() const
         {
             glm::mat4 transform;
@@ -86,6 +100,18 @@ export namespace ownfos::bullet
             transform = glm::scale(transform, { scale.getX(), scale.getY(), scale.getZ() });
 
             return transform;
+        }
+
+        void apply_force(const btVector3& force, const btVector3& offset_from_center = { 0, 0, 0 })
+        {
+            rigid_body->activate(true);
+            rigid_body->applyForce(force, offset_from_center);
+        }
+
+        void apply_impulse(const btVector3& impulse, const btVector3& offset_from_center = { 0, 0, 0 })
+        {
+            rigid_body->activate(true);
+            rigid_body->applyImpulse(impulse, offset_from_center);
         }
 
     private:
