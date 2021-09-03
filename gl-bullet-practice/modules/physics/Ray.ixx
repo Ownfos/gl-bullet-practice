@@ -19,9 +19,17 @@ export namespace ownfos::bullet
         btVector3 start_point;
         btVector3 end_point;
 
+        // Returns the point between start and end of this ray,
+        // where ratio of 0 means start point and 1 means end point.
         btVector3 get_lerped_point(float ratio) const
         {
             return start_point.lerp(end_point, ratio);
+        }
+
+        // Returns the normalized direction vector from start to end point
+        btVector3 get_direction() const
+        {
+            return (end_point - start_point).normalized();
         }
 
         static Ray from_direction(const btVector3& start_point, const btVector3& direction, float distance = default_long_distance)
@@ -47,7 +55,7 @@ export namespace ownfos::bullet
 
             auto ray_direction = world_pos - cam_origin;
 
-            return Ray::from_direction(cam_origin, ray_direction, distance);
+            return Ray::from_direction(world_pos, ray_direction, distance);
         }
     };
 } // namespace ownfos::bullet
