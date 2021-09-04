@@ -10,6 +10,9 @@ A test project for using OpenGL and Bullet Physics together, with latest support
 ## apply force along normal vector or camera ray direction
 ![apply force](https://user-images.githubusercontent.com/39623255/132068167-4fa0fde3-b8ec-4905-b8be-bd37e687da9a.gif)
 
+## drag objects with mouse cursor
+![drag object](https://user-images.githubusercontent.com/39623255/132099364-ba6664b5-50d9-48d4-96fc-26609fba3b2e.gif)
+
 ## Project folder structure
 - root
   - gl-bullet-practice
