@@ -22,6 +22,14 @@ A test project for using OpenGL and Bullet Physics together, with latest support
 | :---: |
 | *Add ImGui UI and damping* |
 
+| ![fps graph with vsync on](https://user-images.githubusercontent.com/39623255/132224110-febe4b56-e0e3-4f13-be4f-8d031f670f66.gif) |
+| :---: |
+| *FPS graph with VSync on* |
+
+| ![fps graph with vsync off](https://user-images.githubusercontent.com/39623255/132224120-1284aba9-030c-4364-8295-2faf704b82b9.gif) |
+| :---: |
+| *FPS graph with VSync off* |
+
 ## Project folder structure
 - root
   - gl-bullet-practice
@@ -41,3 +49,4 @@ A test project for using OpenGL and Bullet Physics together, with latest support
   - vcpkg install bullet3 --triplet=x64-windows
   - vcpkg install imgui[glfw-binding] --triplet=x64-windows
   - vcpkg install imgui[opengl3-glew-binding] --triplet=x64-windows
+  - vcpkg install implot --triplet=x64-windows
