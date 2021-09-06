@@ -234,22 +234,18 @@ int main()
                         // Calculate the world space coordinate of the clicked point
                         clicked_point_world = glm2bt(apply_transform(dragging_object->get_world_transform_matrix(), clicked_point_local));
 
-                        // Only apply force when distance is big enough.
-                        // This prevents divide by 0 happening when we calculate force direction.
-                        if (drag_target_point.distance2(clicked_point_world) > 0.000001f)
-                        {
-                            // The relative coordinate of the point in world space where we want to apply force
-                            auto local_offset = clicked_point_world - dragging_object->get_world_transform().getOrigin();
+                        // The relative coordinate of the point in world space where we want to apply force
+                        auto object_pos = dragging_object->get_world_transform().getOrigin();
+                        auto local_offset = clicked_point_world - object_pos;
 
-                            // A spring-like force towards the target point with damping
-                            constexpr float spring_coef = 30.0f;
-                            auto force = (drag_target_point - clicked_point_world) * spring_coef;
+                        // A spring-like force towards the target point with damping
+                        constexpr float spring_coef = 30.0f;
+                        auto force = (drag_target_point - clicked_point_world) * spring_coef;
 
-                            constexpr float damping_coef = 5.0f;
-                            auto damping = -dragging_object->get_linear_velocity() * damping_coef;
+                        constexpr float damping_coef = 5.0f;
+                        auto damping = -dragging_object->get_linear_velocity() * damping_coef;
 
-                            dragging_object->apply_force(force + damping, local_offset);
-                        }
+                        dragging_object->apply_force(force + damping, local_offset);
                     }
                 }
 
