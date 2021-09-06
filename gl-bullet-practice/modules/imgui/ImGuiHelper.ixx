@@ -3,6 +3,7 @@ module;
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <implot.h>
 #include <fmt/format.h>
 
 export module ImGuiHelper;
@@ -20,8 +21,15 @@ export namespace ownfos::imgui
         {
             IMGUI_CHECKVERSION();
             ImGui::CreateContext();
+            ImPlot::CreateContext();
             ImGui_ImplGlfw_InitForOpenGL(window.get_glfw_window(), true);
             ImGui_ImplOpenGL3_Init(fmt::format("#version {}", glsl_version).c_str());
+        }
+
+        ~ImGuiHelper()
+        {
+            ImPlot::DestroyContext();
+            ImGui::DestroyContext();
         }
 
         template<typename T>

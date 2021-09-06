@@ -6,10 +6,12 @@
 #include <bullet/btBulletDynamicsCommon.h>
 #include <fmt/format.h>
 #include <imgui.h>
+#include <implot.h>
 #include <iostream>
 #include <memory>
 #include <vector>
 #include <array>
+#include <numeric>
 #include <ctime>
 
 import GLFWInitializer;
@@ -41,9 +43,91 @@ struct fmt::formatter<btVector3> : fmt::formatter<std::string_view>
     template<typename FormatContext>
     auto format(const btVector3& v, FormatContext& ctx)
     {
-        auto str = fmt::format("({:5.2f}, {:5.2f}, {:5.2f})", v.x(), v.y(), v.z());
+        auto str = fmt::format("({:6.2f}, {:6.2f}, {:6.2f})", v.x(), v.y(), v.z());
         return fmt::formatter<std::string_view>::format(str, ctx);
     }
+};
+
+class Timer
+{
+public:
+    Timer()
+    {
+        mark();
+    }
+
+    void mark()
+    {
+        start = clock();
+    }
+
+    bool check_duration(clock_t threshold)
+    {
+        clock_t current = clock();
+        return (current - start > threshold);
+    }
+
+private:
+    clock_t start;
+};
+
+class FPSRecord
+{
+public:
+    FPSRecord(int num_records)
+        : frames(num_records, 0)
+        , frame_num(num_records, 0)
+    {
+        std::iota(frame_num.begin(), frame_num.end(), 0);
+    }
+
+    void on_frame_end()
+    {
+        frame_count++;
+        if (timer.check_duration(CLOCKS_PER_SEC))
+        {
+            timer.mark();
+            record(frame_count);
+            frame_count = 0;
+        }
+    }
+
+    void record(int value)
+    {
+        for (int i = 0; i < frames.size() - 1; ++i)
+        {
+            frames[i] = frames[i + 1];
+        }
+        frames[frames.size() - 1] = value;
+    }
+
+    void reset()
+    {
+        for (auto& e : frames)
+        {
+            e = 0;
+        }
+
+        timer.mark();
+        frame_count = 0;
+    }
+
+    void plot_line() const
+    {
+        ImPlot::PlotLine("FPS Record", frame_num.data(), frames.data(), frames.size());
+    }
+
+    int get_last_fps() const
+    {
+        return frames.back();
+    }
+
+private:
+    std::vector<int> frames;
+    std::vector<int> frame_num;
+
+    Timer timer;
+    int frame_count = 0;
 };
 
 int main()
@@ -51,7 +135,7 @@ int main()
     try
     {
         auto init = GLFWInitializer();
-        auto window = Window(800, 600, "hello, world!");
+        auto window = Window(1200, 800, "hello, world!");
 
         auto imgui = ImGuiHelper(window);
 
@@ -129,9 +213,9 @@ int main()
 
         // Variables used to drag an object around the camera with mouse cursor
         float last_raycast_distance;
-        glm::vec3 clicked_point_local;
-        btVector3 clicked_point_world;
-        btVector3 drag_target_point;
+        glm::vec3 clicked_point_local = { 0, 0, 0 };
+        btVector3 clicked_point_world = { 0, 0, 0 };
+        btVector3 drag_target_point = { 0, 0, 0 };
         RigidBody* dragging_object = nullptr;
 
         window.register_key_handler([&](auto key, auto action) {
@@ -189,9 +273,26 @@ int main()
             camera.projection = Projection::perspective(glm::radians(60.0f), window.get_aspect_ratio(), 0.1f, 1000.0f);
         });
 
+        // FPS counter
+        auto frame_record = FPSRecord(60);
+
+        // VSync statewith ImGui checkbox.
+        // We will call glfwSwapInterval only when current checkbox value mismatches the current state.
+        glfwSwapInterval(1);
+        bool vsync_checkbox_state = true;
+        bool current_vsync_state = true;
+
         // Start the main loop that draws a square with transform applied.
         while (!window.should_close())
         {
+            // Toggle VSync on/off if user clicked the checkbox
+            if (current_vsync_state != vsync_checkbox_state)
+            {
+                glfwSwapInterval(vsync_checkbox_state);
+                current_vsync_state = vsync_checkbox_state;
+                frame_record.reset();
+            }
+
             // Update world
             {
                 // Control camera with mouse
@@ -249,7 +350,7 @@ int main()
                     }
                 }
 
-                world.step_simulation(1.0f / 60.0f, 10);
+                world.step_simulation(1.0f / 100.0f, 10);
             }
 
             // Render
@@ -309,16 +410,27 @@ int main()
                 // Show imformation about current object dragging state
                 imgui.render([&] {
                     ImGui::SetNextWindowPos({ 0,0 }, ImGuiCond_Once);
-                    ImGui::Begin("Dragging Info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-                    if (dragging_object != nullptr)
+                    if (ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
                     {
                         ImGui::Text(fmt::format("Clicked point (local): {}", glm2bt(clicked_point_local)).c_str());
                         ImGui::Text(fmt::format("Clicked point (world): {}", clicked_point_world).c_str());
                         ImGui::Text(fmt::format("Drag target point: {}", drag_target_point).c_str());
-                    }
-                    else
-                    {
-                        ImGui::Text("No object is selected");
+
+                        ImGui::Separator();
+
+                        ImGui::Checkbox("VSync", &vsync_checkbox_state);
+
+                        ImGui::Separator();
+
+                        if (ImGui::CollapsingHeader("FPS"))
+                        {
+                            if (ImPlot::BeginPlot("FPS", "", "Frames/sec", ImVec2(500, 0), 0, ImPlotAxisFlags_AutoFit, ImPlotAxisFlags_AutoFit))
+                            {
+                                frame_record.plot_line();
+                                ImPlot::EndPlot();
+                            }
+                            ImGui::Text(fmt::format("Frames per second: {}", frame_record.get_last_fps()).c_str());
+                        }
                     }
                     ImGui::End();
                 });
@@ -327,6 +439,8 @@ int main()
             }
 
             glfwPollEvents();
+
+            frame_record.on_frame_end();
         }
     }
     catch (const std::exception& e)
