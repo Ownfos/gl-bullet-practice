@@ -24,6 +24,7 @@
     <ClCompile Include="modules\buffer\IBuffer.ixx" />
     <ClCompile Include="modules\buffer\BufferPreset.ixx" />
     <ClCompile Include="modules\camera\Camera.ixx" />
+    <ClCompile Include="modules\imgui\ImGuiHelper.ixx" />
     <ClCompile Include="modules\physics\DefaultDynamicsWorldComponents.ixx" />
     <ClCompile Include="modules\physics\DynamicsWorld.ixx" />
     <ClCompile Include="modules\physics\GLMAdapter.ixx" />

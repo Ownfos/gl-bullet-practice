@@ -67,6 +67,11 @@ export namespace ownfos::opengl
             }
         }
 
+        GLFWwindow* get_glfw_window()
+        {
+            return window;
+        }
+
         int get_width() const
         {
             return width;

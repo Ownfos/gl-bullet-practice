@@ -8,6 +8,15 @@ export module Transform;
 
 export namespace ownfos::bullet
 {
+    // Apply linear transformation to the given vector and return the result.
+    glm::vec3 apply_transform(const glm::mat4& transform, const glm::vec3& vector)
+    {
+        auto homogeneous = transform * glm::vec4(vector, 1.0f);
+        auto cartesian = homogeneous / homogeneous.w;
+
+        return cartesian;
+    }
+
     struct Transform
     {
         btVector3 position = { 0, 0, 0 };

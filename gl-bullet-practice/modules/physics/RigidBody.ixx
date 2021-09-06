@@ -88,6 +88,26 @@ export namespace ownfos::bullet
             };
         }
 
+        // Returns the mass of rigidbody.
+        // If the object is static, return value is 0.
+        btScalar get_mass() const
+        {
+            auto inv_mass = rigid_body->getInvMass();
+            if (inv_mass == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1.0f / inv_mass;
+            }
+        }
+
+        const btVector3& get_linear_velocity() const
+        {
+            return rigid_body->getLinearVelocity();
+        }
+
         glm::mat4 get_world_transform_matrix() const
         {
             glm::mat4 transform;

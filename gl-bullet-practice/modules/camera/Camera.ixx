@@ -67,12 +67,11 @@ export namespace ownfos::opengl
         glm::vec3 screen_to_world_point(const glm::vec2& normalized_screen_point) const
         {
             auto inverse_transform = glm::inverse(get_matrix());
-            auto camera_near_plane_point = glm::vec4(normalized_screen_point.x, normalized_screen_point.y, projection.get_near_plane_distance(), 1.0f);
-            auto world_point = inverse_transform * camera_near_plane_point;
+            auto camera_near_plane_point = glm::vec3(normalized_screen_point, projection.get_near_plane_distance());
 
-            // Since world_point is in homogeneous coordinate, we need to convert it
-            // to cartesian coordinate (which we want) by dividing everything with w component.
-            return world_point / world_point.w;
+            auto world_point = apply_transform(inverse_transform, camera_near_plane_point);
+
+            return world_point;
         }
     };
 } // namespace ownfos::opengl

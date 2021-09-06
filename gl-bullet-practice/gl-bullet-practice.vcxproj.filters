@@ -34,6 +34,9 @@
     <Filter Include="모듈\camera">
       <UniqueIdentifier>{fba9f59f-7e79-411d-81cb-c96e4c07bc0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="모듈\imgui">
+      <UniqueIdentifier>{a8d3b2f1-7f90-4291-8416-6b1e4dc141be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="modules\buffer\IBuffer.ixx">
@@ -107,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="sources\main.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\imgui\ImGuiHelper.ixx">
+      <Filter>모듈\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

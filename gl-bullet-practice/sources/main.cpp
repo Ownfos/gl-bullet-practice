@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <bullet/btBulletDynamicsCommon.h>
 #include <fmt/format.h>
+#include <imgui.h>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -26,7 +27,10 @@ import GLMAdapter;
 
 import Camera;
 
+import ImGuiHelper;
+
 using namespace ownfos::opengl;
+using namespace ownfos::imgui;
 using namespace ownfos::primitives;
 using namespace ownfos::bullet;
 
@@ -49,6 +53,8 @@ int main()
         auto init = GLFWInitializer();
         auto window = Window(800, 600, "hello, world!");
 
+        auto imgui = ImGuiHelper(window);
+
         // Prepare shader.
         auto vs = ShaderSourceFromFile("resources/default_vs.txt");
         auto fs = ShaderSourceFromFile("resources/default_fs.txt");
@@ -61,7 +67,7 @@ int main()
         // Create a new physics world with downward gravity.
         auto world_components = std::make_unique<DefaultDynamicsWorldComponents>();
         auto world = DynamicsWorld(std::move(world_components));
-        world.set_gravity({ 0, -10, 0 });
+        world.set_gravity({ 0, -9.8, 0 });
 
         // Place a box shaped ground below.
         // Note that the default mass value is 0, which means the object is static.
@@ -69,9 +75,9 @@ int main()
             .shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 }),
             .transform = {
                 .position = {0, -11, 0},
-                .scale = {10, 0.2, 10}
+                .scale = {20, 0.2, 20}
             }
-            });
+        });
         world.add_rigid_body(ground);
 
         // Place a mini cube above the ground.
@@ -83,10 +89,11 @@ int main()
                 .rotation = {{0, 0, 1}, glm::radians(45.1f)}, // Rotate 45.1 degrees around +Z axis
                 .scale = {1, 0.5, 0.5}
             }
-            });
+        });
         world.add_rigid_body(cube_object);
 
-        std::vector<std::shared_ptr<RigidBody>> clones;
+        // Place more cubes!
+        std::vector<std::shared_ptr<RigidBody>> more_cubes;
         for (int pos = 0; pos < 5; ++pos)
         {
             auto cube_object2 = std::make_shared<RigidBody>(RigidBodyConfig{
@@ -97,9 +104,9 @@ int main()
                     .rotation = {{0, 0, 1}, glm::radians(45.1f)}, // Rotate 45.1 degrees around +Z axis
                     .scale = {1, 0.5, 0.5}
                 }
-                });
+            });
             world.add_rigid_body(cube_object2);
-            clones.push_back(cube_object2);
+            more_cubes.push_back(cube_object2);
         }
 
         // Prepare camera for view and projection matrix
@@ -122,8 +129,8 @@ int main()
 
         // Variables used to drag an object around the camera with mouse cursor
         float last_raycast_distance;
-        glm::vec4 clicked_point_local;
-        btVector3 point_of_impact;
+        glm::vec3 clicked_point_local;
+        btVector3 clicked_point_world;
         btVector3 drag_target_point;
         RigidBody* dragging_object = nullptr;
 
@@ -161,8 +168,8 @@ int main()
                     //
                     // In order to keep track of the same point on the model,
                     // convert the clicked point to the model's local coordinate.
-                    auto local_point = glm::inverse(result->object->get_world_transform_matrix()) * glm::vec4(bt2glm(result->position), 1.0f);
-                    clicked_point_local = local_point / local_point.w;
+                    auto world_to_local = glm::inverse(result->object->get_world_transform_matrix());
+                    clicked_point_local = apply_transform(world_to_local, bt2glm(result->position));
 
                     // The object will now get dragged to a point in a sphere around camera position,
                     // where the radius is the initial raycast distance.
@@ -225,27 +232,23 @@ int main()
                         drag_target_point = ray.start_point + ray.get_direction() * last_raycast_distance;
 
                         // Calculate the world space coordinate of the clicked point
-                        auto clicked_point_world = dragging_object->get_world_transform_matrix() * clicked_point_local;
-                        point_of_impact = glm2bt(glm::vec3(clicked_point_world / clicked_point_world.w));
+                        clicked_point_world = glm2bt(apply_transform(dragging_object->get_world_transform_matrix(), clicked_point_local));
 
                         // Only apply force when distance is big enough.
                         // This prevents divide by 0 happening when we calculate force direction.
-                        if (drag_target_point.distance2(point_of_impact) > 0.001f)
+                        if (drag_target_point.distance2(clicked_point_world) > 0.000001f)
                         {
                             // The relative coordinate of the point in world space where we want to apply force
-                            auto local_offset = point_of_impact - dragging_object->get_world_transform().getOrigin();
+                            auto local_offset = clicked_point_world - dragging_object->get_world_transform().getOrigin();
 
-                            // A spring-like force towards the target point
-                            auto force = (drag_target_point - point_of_impact).normalized() * 20.0f;
+                            // A spring-like force towards the target point with damping
+                            constexpr float spring_coef = 30.0f;
+                            auto force = (drag_target_point - clicked_point_world) * spring_coef;
 
-                            dragging_object->apply_force(force, local_offset);
+                            constexpr float damping_coef = 5.0f;
+                            auto damping = -dragging_object->get_linear_velocity() * damping_coef;
 
-                            std::cout << fmt::format(
-                                "[Draging] drag target: {} -> target point: {}, local offset: {}\n",
-                                point_of_impact,
-                                drag_target_point,
-                                local_offset
-                            );
+                            dragging_object->apply_force(force + damping, local_offset);
                         }
                     }
                 }
@@ -270,9 +273,9 @@ int main()
                 shader.set_uniform("color", glm::vec4{ 0.5f, 0.7f, 0.9f, 1.0f });
                 draw_indexed(GL_TRIANGLES, 36, 0);
 
-                // Draw the falling mini cube
+                // Draw other cubes
                 shader.set_uniform("color", glm::vec4{ 0.7f, 0.2f, 0.5f, 1.0f });
-                for (const auto& cube : clones)
+                for (const auto& cube : more_cubes)
                 {
                     shader.set_uniform("world", cube->get_world_transform_matrix());
                     draw_indexed(GL_TRIANGLES, 36, 0);
@@ -287,13 +290,13 @@ int main()
                 // Draw gizmos for object drag positions (dragging point on object & target point to move)
                 if (dragging_object != nullptr)
                 {
+                    shader.set_uniform("color", glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
                     {
                         glm::mat4 transform(1.0f);
-                        transform = glm::translate(transform, bt2glm(point_of_impact));
+                        transform = glm::translate(transform, bt2glm(clicked_point_world));
                         transform = glm::scale(transform, { 0.1, 0.1, 0.1 });
 
                         shader.set_uniform("world", transform);
-                        shader.set_uniform("color", glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
                         draw_indexed(GL_TRIANGLES, 36, 0);
                     }
 
@@ -303,10 +306,26 @@ int main()
                         transform = glm::scale(transform, { 0.1, 0.1, 0.1 });
 
                         shader.set_uniform("world", transform);
-                        shader.set_uniform("color", glm::vec4{ 1.0f, 0.0f, 1.0f, 1.0f });
                         draw_indexed(GL_TRIANGLES, 36, 0);
                     }
                 }
+
+                // Show imformation about current object dragging state
+                imgui.render([&] {
+                    ImGui::SetNextWindowPos({ 0,0 }, ImGuiCond_Once);
+                    ImGui::Begin("Dragging Info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+                    if (dragging_object != nullptr)
+                    {
+                        ImGui::Text(fmt::format("Clicked point (local): {}", glm2bt(clicked_point_local)).c_str());
+                        ImGui::Text(fmt::format("Clicked point (world): {}", clicked_point_world).c_str());
+                        ImGui::Text(fmt::format("Drag target point: {}", drag_target_point).c_str());
+                    }
+                    else
+                    {
+                        ImGui::Text("No object is selected");
+                    }
+                    ImGui::End();
+                });
 
                 window.swap_buffer();
             }
