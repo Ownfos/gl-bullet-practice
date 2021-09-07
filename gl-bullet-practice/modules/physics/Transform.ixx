@@ -1,6 +1,6 @@
 module;
 
-#include <bullet/btBulletDynamicsCommon.h>
+#include <bullet/LinearMath/btVector3.h>
 #include <bullet/LinearMath/btQuaternion.h>
 #include <glm/glm.hpp>
 
@@ -16,6 +16,13 @@ export namespace ownfos::bullet
 
         return cartesian;
     }
+
+    struct EulerRotation
+    {
+        btScalar yaw;
+        btScalar pitch;
+        btScalar roll;
+    };
 
     struct Transform
     {
@@ -47,6 +54,13 @@ export namespace ownfos::bullet
         btVector3 right() const
         {
             return quatRotate(rotation, { 1, 0, 0 });
+        }
+
+        EulerRotation euler_rotation() const
+        {
+            btScalar yaw, pitch, roll;
+            rotation.getEulerZYX(roll, yaw, pitch);
+            return { yaw, pitch, roll };
         }
     };
 } // namespace ownfos::bullet
