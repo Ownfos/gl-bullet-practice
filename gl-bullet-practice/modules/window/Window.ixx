@@ -43,13 +43,13 @@ export namespace ownfos::opengl
         // - y: distance in pixels from the top edge of this window
         using CursorPositionHandler = std::function<void(double /* x */, double /* y */)>;
 
-        Window(int width, int height, const std::string& title, GLFWContextVersion context_version = { 3,3 })
+        Window(int width, int height, std::string_view title, GLFWContextVersion context_version = {3,3})
             : width(width), height(height)
         {
             set_window_hint(context_version);
 
             // Create window
-            window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+            window = glfwCreateWindow(width, height, title.data(), NULL, NULL);
             if (window == NULL) {
                 throw std::runtime_error("[Window] Failed to create a GLFW window");
             }

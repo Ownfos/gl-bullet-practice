@@ -78,16 +78,6 @@ export namespace ownfos::bullet
             return transform;
         }
 
-        Transform get_transform() const
-        {
-            auto bullet_transform = get_world_transform();
-            return {
-                .position = bullet_transform.getOrigin(),
-                .rotation = bullet_transform.getRotation(),
-                .scale = scale
-            };
-        }
-
         // Returns the mass of rigidbody.
         // If the object is static, return value is 0.
         btScalar get_mass() const
@@ -120,6 +110,11 @@ export namespace ownfos::bullet
             transform = glm::scale(transform, { scale.getX(), scale.getY(), scale.getZ() });
 
             return transform;
+        }
+
+        void set_damping(btScalar linear, btScalar angular)
+        {
+            rigid_body->setDamping(linear, angular);
         }
 
         void apply_force(const btVector3& force, const btVector3& offset_from_center = { 0, 0, 0 })
