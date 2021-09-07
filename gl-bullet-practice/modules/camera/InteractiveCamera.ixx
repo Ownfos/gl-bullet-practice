@@ -67,18 +67,7 @@ export namespace ownfos::opengl
             prev_cursor_pos = window.get_normalized_cursor_pos();;
         }
 
-        //glm::mat4 get_matrix() const
-        //{
-        //    return camera.get_matrix();
-        //}
-
-        //glm::vec3 screen_to_world_point(const glm::vec2& normalized_screen_point) const
-        //{
-        //    return camera.screen_to_world_point(normalized_screen_point);
-        //}
-
     private:
-        //Camera camera;
         glm::vec2 prev_cursor_pos;
         float yaw;
         float pitch;
