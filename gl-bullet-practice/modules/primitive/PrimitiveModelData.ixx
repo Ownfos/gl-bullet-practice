@@ -3,7 +3,7 @@ export module PrimitiveModelData;
 export import VertexBuffer;
 export import IndexBuffer;
 
-export namespace ownfos::primitives
+export namespace ownfos::primitive
 {
     struct PrimitiveModelData
     {

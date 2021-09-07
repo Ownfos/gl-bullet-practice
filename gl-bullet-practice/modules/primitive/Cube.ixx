@@ -118,7 +118,7 @@ std::vector<unsigned int> create_index_data()
     };
 }
 
-namespace ownfos::primitives
+namespace ownfos::primitive
 {
     // Make a cube where each edge ranges from -1 to +1
     export PrimitiveModelData create_cube_model_data()
@@ -129,4 +129,4 @@ namespace ownfos::primitives
             .indices = {create_index_data()}
         };
     }
-} // namespace ownfos::primitives::cube
+} // namespace ownfos::primitive

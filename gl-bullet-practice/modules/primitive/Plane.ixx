@@ -35,7 +35,7 @@ std::vector<unsigned int> create_index_data()
     };
 }
 
-export namespace ownfos::primitives
+export namespace ownfos::primitive
 {
     // Make a quad with +Z axis as a normal vector
     PrimitiveModelData create_plane_model_data()
@@ -46,4 +46,4 @@ export namespace ownfos::primitives
             .indices = {create_index_data()}
         };
     }
-} // namespace ownfos::primitives::plane
+} // namespace ownfos::primitive

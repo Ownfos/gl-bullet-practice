@@ -24,6 +24,7 @@
     <ClCompile Include="modules\buffer\IBuffer.ixx" />
     <ClCompile Include="modules\buffer\BufferPreset.ixx" />
     <ClCompile Include="modules\camera\Camera.ixx" />
+    <ClCompile Include="modules\camera\InteractiveCamera.ixx" />
     <ClCompile Include="modules\imgui\ImGuiHelper.ixx" />
     <ClCompile Include="modules\physics\DefaultDynamicsWorldComponents.ixx" />
     <ClCompile Include="modules\physics\DynamicsWorld.ixx" />
@@ -33,9 +34,13 @@
     <ClCompile Include="modules\physics\HitInfo.ixx" />
     <ClCompile Include="modules\physics\RigidBody.ixx" />
     <ClCompile Include="modules\physics\Transform.ixx" />
-    <ClCompile Include="modules\primitives\Cube.ixx" />
-    <ClCompile Include="modules\primitives\Plane.ixx" />
-    <ClCompile Include="modules\primitives\PrimitiveModelData.ixx" />
+    <ClCompile Include="modules\primitive\Cube.ixx" />
+    <ClCompile Include="modules\primitive\Plane.ixx" />
+    <ClCompile Include="modules\primitive\PrimitiveModelData.ixx" />
+    <ClCompile Include="modules\renderer\CubeRenderer.ixx" />
+    <ClCompile Include="modules\renderer\LineRenderer.ixx" />
+    <ClCompile Include="modules\scene\Scene1.ixx" />
+    <ClCompile Include="modules\scene\Scene2.ixx" />
     <ClCompile Include="modules\shader\IShaderSource.ixx" />
     <ClCompile Include="modules\shader\ShaderProgram.ixx" />
     <ClCompile Include="modules\shader\ShaderSourceComposite.ixx" />
@@ -46,8 +51,10 @@
     <ClCompile Include="sources\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="resources\default_fs.txt" />
-    <Text Include="resources\default_vs.txt" />
+    <Text Include="resources\cube_fs.txt" />
+    <Text Include="resources\cube_vs.txt" />
+    <Text Include="resources\line_fs.txt" />
+    <Text Include="resources\line_vs.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

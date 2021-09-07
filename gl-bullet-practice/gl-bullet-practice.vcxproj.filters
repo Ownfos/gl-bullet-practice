@@ -25,9 +25,6 @@
     <Filter Include="모듈\shader">
       <UniqueIdentifier>{24b24464-c27e-47f6-9a28-63dcec0d8eee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="모듈\primitives">
-      <UniqueIdentifier>{a49f23a2-2fe3-4ceb-b07d-a8f710d7744f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="모듈\physics">
       <UniqueIdentifier>{a8adbd7d-e799-480b-9503-010c72dfc1e0}</UniqueIdentifier>
     </Filter>
@@ -36,6 +33,15 @@
     </Filter>
     <Filter Include="모듈\imgui">
       <UniqueIdentifier>{a8d3b2f1-7f90-4291-8416-6b1e4dc141be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\renderer">
+      <UniqueIdentifier>{1d251c94-613e-4f68-bd49-90a521b16334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\primitive">
+      <UniqueIdentifier>{a49f23a2-2fe3-4ceb-b07d-a8f710d7744f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\scene">
+      <UniqueIdentifier>{b94b7886-fb57-4c3d-a34e-b1fb73881678}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,15 +78,6 @@
     <ClCompile Include="modules\shader\ShaderSourceFromString.ixx">
       <Filter>모듈\shader</Filter>
     </ClCompile>
-    <ClCompile Include="modules\primitives\Cube.ixx">
-      <Filter>모듈\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\primitives\Plane.ixx">
-      <Filter>모듈\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\primitives\PrimitiveModelData.ixx">
-      <Filter>모듈\primitives</Filter>
-    </ClCompile>
     <ClCompile Include="modules\physics\DynamicsWorld.ixx">
       <Filter>모듈\physics</Filter>
     </ClCompile>
@@ -108,18 +105,48 @@
     <ClCompile Include="modules\physics\HitInfo.ixx">
       <Filter>모듈\physics</Filter>
     </ClCompile>
-    <ClCompile Include="sources\main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="modules\imgui\ImGuiHelper.ixx">
       <Filter>모듈\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="sources\main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\renderer\CubeRenderer.ixx">
+      <Filter>모듈\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\primitive\Cube.ixx">
+      <Filter>모듈\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\primitive\Plane.ixx">
+      <Filter>모듈\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\primitive\PrimitiveModelData.ixx">
+      <Filter>모듈\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\scene\Scene1.ixx">
+      <Filter>모듈\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\scene\Scene2.ixx">
+      <Filter>모듈\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\renderer\LineRenderer.ixx">
+      <Filter>모듈\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\camera\InteractiveCamera.ixx">
+      <Filter>모듈\camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="resources\default_fs.txt">
+    <Text Include="resources\cube_fs.txt">
       <Filter>리소스 파일</Filter>
     </Text>
-    <Text Include="resources\default_vs.txt">
+    <Text Include="resources\cube_vs.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
+    <Text Include="resources\line_vs.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
+    <Text Include="resources\line_fs.txt">
       <Filter>리소스 파일</Filter>
     </Text>
   </ItemGroup>
