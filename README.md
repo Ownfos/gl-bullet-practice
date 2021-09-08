@@ -30,6 +30,10 @@ A test project for using OpenGL and Bullet Physics together, with latest support
 | :---: |
 | *FPS graph with VSync off* |
 
+| ![spring parameters](https://user-images.githubusercontent.com/39623255/132481699-ca7af229-bd46-40a3-8c8f-d45677f94b00.gif) |
+| :---: |
+| *Two cubes connected with springs (feat. realtime spring coefficient & damping factor control)* |
+
 ## Project folder structure
 - root
   - gl-bullet-practice
