@@ -9,7 +9,6 @@ module;
 
 export module Scene2;
 
-import GLFWInitializer;
 import Window;
 import InteractiveCamera;
 import CubeRenderer;
@@ -19,12 +18,15 @@ using namespace ownfos::opengl;
 
 export namespace scene2
 {
+    // Test InteractiveCamera, CubeRenderer, and LineRenderer
     void run()
     {
         try
         {
             auto init = GLFWInitializer();
             auto window = Window(1200, 800, "hello, world!", { 3, 3 });
+            window.exit_when_pressed(GLFW_KEY_ESCAPE);
+
             auto cube_renderer = CubeRenderer();
             auto line_renderer = LineRenderer();
 
@@ -40,16 +42,8 @@ export namespace scene2
                         1000.0f
                     )
                 },
-                window.get_normalized_cursor_pos()
+                window
             );
-            window.set_cursor_enabled(false);
-
-            window.register_key_handler([&](auto key, auto action) {
-                if (key == GLFW_KEY_ESCAPE)
-                {
-                    window.set_close_flag();
-                }
-            });
 
             while (!window.should_close())
             {

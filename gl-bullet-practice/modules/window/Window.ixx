@@ -10,6 +10,8 @@ module;
 
 export module Window;
 
+export import GLFWInitializer;
+
 export namespace ownfos::opengl
 {
     struct GLFWContextVersion
@@ -123,6 +125,17 @@ export namespace ownfos::opengl
         void swap_buffer()
         {
             glfwSwapBuffers(window);
+        }
+
+        // A boilerplate code for closing window when a specific key is pressed (usually GLFW_KEY_ESCAPE)
+        void exit_when_pressed(int exit_key)
+        {
+            register_key_handler([&](auto key, auto action) {
+                if (key == exit_key && action == GLFW_PRESS)
+                {
+                    set_close_flag();
+                }
+            });
         }
 
         // Returns the lastly updated key state (GLFW_PRESS or GLFW_RELEASE)

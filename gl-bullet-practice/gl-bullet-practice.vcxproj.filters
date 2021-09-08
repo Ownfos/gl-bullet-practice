@@ -43,6 +43,24 @@
     <Filter Include="모듈\scene">
       <UniqueIdentifier>{b94b7886-fb57-4c3d-a34e-b1fb73881678}</UniqueIdentifier>
     </Filter>
+    <Filter Include="모듈\physics\raycast">
+      <UniqueIdentifier>{d7a524db-8092-4e95-9153-ab69746f523c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\physics\world">
+      <UniqueIdentifier>{56414a3f-d15c-461c-8699-b732019871cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\physics\spring">
+      <UniqueIdentifier>{1f00fa0a-f122-4557-8217-66f327be21ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\physics\rigidbody">
+      <UniqueIdentifier>{2e5e205f-ddc3-4d29-b6da-60aa69588b37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\utility">
+      <UniqueIdentifier>{b91286f8-dcdf-4acc-a041-69b90a54a439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모듈\physics\dragging">
+      <UniqueIdentifier>{c94606ca-0f96-4abf-8dbb-203965d2964e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="modules\buffer\IBuffer.ixx">
@@ -78,32 +96,8 @@
     <ClCompile Include="modules\shader\ShaderSourceFromString.ixx">
       <Filter>모듈\shader</Filter>
     </ClCompile>
-    <ClCompile Include="modules\physics\DynamicsWorld.ixx">
-      <Filter>모듈\physics</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\physics\RigidBody.ixx">
-      <Filter>모듈\physics</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\physics\IDynamicsWorldComponents.ixx">
-      <Filter>모듈\physics</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\physics\DefaultDynamicsWorldComponents.ixx">
-      <Filter>모듈\physics</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\physics\GLMAdapter.ixx">
-      <Filter>모듈\physics</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\physics\Transform.ixx">
-      <Filter>모듈\physics</Filter>
-    </ClCompile>
     <ClCompile Include="modules\camera\Camera.ixx">
       <Filter>모듈\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\physics\Ray.ixx">
-      <Filter>모듈\physics</Filter>
-    </ClCompile>
-    <ClCompile Include="modules\physics\HitInfo.ixx">
-      <Filter>모듈\physics</Filter>
     </ClCompile>
     <ClCompile Include="modules\imgui\ImGuiHelper.ixx">
       <Filter>모듈\imgui</Filter>
@@ -134,6 +128,45 @@
     </ClCompile>
     <ClCompile Include="modules\camera\InteractiveCamera.ixx">
       <Filter>모듈\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\Ray.ixx">
+      <Filter>모듈\physics\raycast</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\HitInfo.ixx">
+      <Filter>모듈\physics\raycast</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\DefaultDynamicsWorldComponents.ixx">
+      <Filter>모듈\physics\world</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\DynamicsWorld.ixx">
+      <Filter>모듈\physics\world</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\IDynamicsWorldComponents.ixx">
+      <Filter>모듈\physics\world</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\RigidBody.ixx">
+      <Filter>모듈\physics\rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\Transform.ixx">
+      <Filter>모듈\physics\rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\LocalPoint.ixx">
+      <Filter>모듈\physics\spring</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\Spring.ixx">
+      <Filter>모듈\physics\spring</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utility\GLMAdapter.ixx">
+      <Filter>모듈\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\scene\Scene3.ixx">
+      <Filter>모듈\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utility\FormatMathTypes.ixx">
+      <Filter>모듈\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\physics\ObjectDragger.ixx">
+      <Filter>모듈\physics\dragging</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@ export import Camera;
 export import GLMAdapter;
 
 using namespace ownfos::opengl;
+using namespace ownfos::utility;
 
 constexpr float default_long_distance = 10000.0f;
 

@@ -9,6 +9,7 @@ export import Transform;
 export import GLMAdapter;
 
 using namespace ownfos::bullet;
+using namespace ownfos::utility;
 
 export namespace ownfos::opengl
 {

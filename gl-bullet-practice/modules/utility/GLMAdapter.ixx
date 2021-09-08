@@ -5,7 +5,7 @@ module;
 
 export module GLMAdapter;
 
-export namespace ownfos::bullet
+export namespace ownfos::utility
 {
     glm::vec3 bt2glm(const btVector3& vector)
     {
@@ -16,4 +16,4 @@ export namespace ownfos::bullet
     {
         return { vector.x, vector.y, vector.z };
     }
-} // namespace ownfos::bullet
+} // namespace ownfos::utility
