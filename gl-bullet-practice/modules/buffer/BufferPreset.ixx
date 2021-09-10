@@ -32,6 +32,8 @@ export namespace ownfos::opengl
             {
                 data->bind();
             }
+
+            glBindVertexArray(0);
         }
 
         void use() const
