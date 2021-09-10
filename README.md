@@ -34,6 +34,10 @@ A test project for using OpenGL and Bullet Physics together, with latest support
 | :---: |
 | *Two cubes connected with springs (feat. realtime spring coefficient & damping factor control)* |
 
+| ![image](https://user-images.githubusercontent.com/39623255/132817594-78e2781c-6575-49ec-8835-aaaf4e418754.png) |
+| :---: |
+| *Renderers for smooth sphere (left), cube (top), flat sphere (right), and lines (xyz axis)* |
+
 ## Project folder structure
 - root
   - gl-bullet-practice
@@ -47,7 +51,7 @@ A test project for using OpenGL and Bullet Physics together, with latest support
   - Show FPS record as ImPlot bar graph
   - Drag cubes with mouse
 - Scene2.ixx
-  - Test CubeRenderer and LineRenderer functionality
+  - Test primitive renderer functionality (line, cube, sphere)
 - Scene3.ixx
   - Test multiple springs
   - Control spring strength and linear/angular damping with ImGui sliders
