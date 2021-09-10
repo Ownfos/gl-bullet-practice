@@ -60,6 +60,9 @@ export namespace ownfos::opengl
 
             // Set the newly created window as the current context
             use_as_context();
+
+            // Enable VSync by default
+            glfwSwapInterval(1);
         }
 
         ~Window()
