@@ -28,6 +28,8 @@ export namespace ownfos::imgui
 
         ~ImGuiHelper()
         {
+            ImGui_ImplOpenGL3_Shutdown();
+            ImGui_ImplGlfw_Shutdown();
             ImPlot::DestroyContext();
             ImGui::DestroyContext();
         }
