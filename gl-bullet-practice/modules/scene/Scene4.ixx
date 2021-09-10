@@ -12,9 +12,10 @@ module;
 #include <exception>
 #include <iostream>
 
-export module Scene3;
+export module Scene4;
 
 import Window;
+import SphereRenderer;
 import CubeRenderer;
 import LineRenderer;
 import InteractiveCamera;
@@ -31,24 +32,13 @@ using namespace ownfos::imgui;
 using namespace ownfos::bullet;
 using namespace ownfos::utility;
 
-std::shared_ptr<RigidBody> create_uniform_cube(const btVector3& position)
-{
-    return std::make_shared<RigidBody>(RigidBodyConfig{
-        .shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 }),
-        .mass = 1.0f,
-        .transform = {
-            .position = position
-        }
-    });
-}
-
-struct RenderedCube
+struct RenderedSphere
 {
     RigidBody* object;
     glm::vec4 color;
 };
 
-export namespace scene3
+export namespace scene4
 {
     // Test spring with difference tension and damping parameters
     void run()
@@ -60,6 +50,7 @@ export namespace scene3
             window.exit_when_pressed(GLFW_KEY_ESCAPE);
 
             auto imgui = ImGuiHelper(window);
+            auto sphere_renderer = SphereRenderer();
             auto cube_renderer = CubeRenderer();
             auto line_renderer = LineRenderer();
 
@@ -84,48 +75,83 @@ export namespace scene3
             world.set_gravity({ 0, 0, 0 });
 
             // Prepare parameters controllable by ImGui sliders
-            float linear_damping = 0.4f;
+            float linear_damping = 0.8f;
             float angular_damping = 0.8f;
-            float spring_coef = 3.0f;
+            float spring_coef = 1.0f;
+            float gravity = 0.0f;
 
-            // Prepares cubes with several springs attached
-            std::vector<RenderedCube> rendered_cubes;
+            // Prepare ground
+            auto ground = std::make_shared<RigidBody>(RigidBodyConfig{
+                .shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 }),
+                .transform = {
+                    .position = {0, -2, 0},
+                    .scale = {20, 0.2, 20}
+                }
+            });
+            world.add_rigid_body(ground);
 
-            auto create_uniform_cube = [&](const btVector3& position, const glm::vec4& color) {
-                auto cube = std::make_shared<RigidBody>(RigidBodyConfig{
-                    .shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 }),
-                    .mass = 1.0f,
+            // Prepare spheres
+            std::vector<RenderedSphere> rendered_spheres;
+
+            auto create_uniform_sphere = [&](const btVector3& position, const glm::vec4& color) {
+                auto sphere = std::make_shared<RigidBody>(RigidBodyConfig{
+                    .shape = std::make_shared<btSphereShape>(1.0f),
+                    .mass = 0.2f,
                     .transform = {
-                        .position = position
+                        .position = position,
+                        .scale = {0.3f, 0.3f, 0.3f}
                     }
                 });
-                world.add_rigid_body(cube);
-                rendered_cubes.push_back({ .object = cube.get(), .color = color });
+                world.add_rigid_body(sphere);
+                rendered_spheres.push_back({ .object = sphere.get(), .color = color });
 
-                return cube;
+                return sphere;
             };
-            auto spring_end_1 = create_uniform_cube({ 0, 0, -2 }, { 0.2f, 0.8f, 0.4f, 1.0f });
-            auto spring_end_2 = create_uniform_cube({ 3, 0, -2 }, { 0.8f, 0.2f, 0.4f, 1.0f });
 
-            // Initialize springs between two cubes
-            auto point1 = spring_end_1.get();
-            auto point2 = spring_end_2.get();
-            auto springs = std::vector<Spring>{
-                // Connect center
-                Spring(spring_coef, { point1, {0, 0, 0}   }, { point2, {0, 0, 0}    }),
+            auto sphere_color = glm::vec4{ 0.2f, 0.8f, 0.4f, 1.0f };
+            auto spheres = std::vector{
+                // Spheres representing an end point of a cube
+                create_uniform_sphere({ 1, 1, 1 }, sphere_color),
+                create_uniform_sphere({ 1, -1, 1 }, sphere_color),
+                create_uniform_sphere({ 1, 1, -1 }, sphere_color),
+                create_uniform_sphere({ 1, -1, -1 }, sphere_color),
+                create_uniform_sphere({ -1, 1, 1 }, sphere_color),
+                create_uniform_sphere({ -1, -1, 1 }, sphere_color),
+                create_uniform_sphere({ -1, 1, -1 }, sphere_color),
+                create_uniform_sphere({ -1, -1, -1 }, sphere_color),
+                create_uniform_sphere({ 0, 0, 0 }, sphere_color),
 
-                // Connect four points on X plane
-                Spring(spring_coef, { point1, {1, 1, -1}  }, { point2, {-1, 1, -1}  }),
-                Spring(spring_coef, { point1, {1, -1, -1} }, { point2, {-1, -1, -1} }),
-                Spring(spring_coef, { point1, {1, 1, 1}   }, { point2, {-1, 1, 1}   }),
-                Spring(spring_coef, { point1, {1, -1, 1}  }, { point2, {-1, -1, 1}  }),
-
-                // Cross eight points
-                Spring(spring_coef, { point1, {1, -1, -1} }, { point2, {-1, 1, 1}   }),
-                Spring(spring_coef, { point1, {1, 1, -1}  }, { point2, {-1, -1, 1}  }),
-                Spring(spring_coef, { point1, {1, -1, 1}  }, { point2, {-1, 1, -1}  }),
-                Spring(spring_coef, { point1, {1, 1, 1}   }, { point2, {-1, -1, -1} }),
+                // Tetrahedron with offset (2, 0, 0)
+                create_uniform_sphere({ 3, 0, 0 }, sphere_color),
+                create_uniform_sphere({ 2, 1, 0 }, sphere_color),
+                create_uniform_sphere({ 2, 0, 1 }, sphere_color),
+                create_uniform_sphere({ 3, 1, 1 }, sphere_color),
             };
+
+            // Initialize springs
+            auto springs = std::vector<Spring>();
+
+            auto connect_spheres = [&](auto s1, auto s2){
+                springs.push_back({ spring_coef, { spheres[s1].get(), {0, 0, 0} }, { spheres[s2].get(), {0, 0, 0} } });
+            };
+
+            // Connect first 9 spheres in every possible way
+            for (int i = 0; i < 9; ++i)
+            {
+                for (int j = i + 1; j < 9; ++j)
+                {
+                    connect_spheres(i, j);
+                }
+            }
+
+            // Connect next 4 spheres in every possible way
+            for (int i = 9; i < 13; ++i)
+            {
+                for (int j = i + 1; j < 13; ++j)
+                {
+                    connect_spheres(i, j);
+                }
+            }
 
             auto object_dragger = ObjectDragger(window, camera, world);
 
@@ -144,9 +170,14 @@ export namespace scene3
                     camera.update_transform(window);
                     object_dragger.try_drag_object(window, camera, world);
 
+                    // Update gravity strength
+                    world.set_gravity({ 0, -gravity, 0 });
+
                     // Update damping parameters
-                    spring_end_1->set_damping(linear_damping, angular_damping);
-                    spring_end_2->set_damping(linear_damping, angular_damping);
+                    for (auto& sphere : spheres)
+                    {
+                        sphere->set_damping(linear_damping, angular_damping);
+                    }
 
                     // Spring between two uniform cubes
                     for (auto& spring : springs)
@@ -155,7 +186,7 @@ export namespace scene3
                         spring.apply_force();
                     }
 
-                    world.step_simulation(1.0f / 60.0f, 100);
+                    world.step_simulation(1.0f / 60.0f, 1000);
                 }
 
                 // Render
@@ -164,16 +195,19 @@ export namespace scene3
 
                     auto cam_mat = camera.get_matrix();
 
+                    // Render ground
+                    cube_renderer.render(cam_mat, ground->get_world_transform_matrix(), { 0.7, 0.7, 0.7, 1.0 });
+
                     // Render all rigid bodies
-                    for (const auto& cube : rendered_cubes)
+                    for (const auto& sphere : rendered_spheres)
                     {
-                        cube_renderer.render(cam_mat, cube.object->get_world_transform_matrix(), cube.color);
+                        sphere_renderer.render(cam_mat, sphere.object->get_world_transform_matrix(), sphere.color);
                     }
 
                     // Draw gizmos for spring connections
                     for (const auto& spring : springs)
                     {
-                        line_renderer.render(cam_mat, spring.point1.get_world_point(), spring.point2.get_world_point(), { 0.0f, 0.0f, 1.0f, 1.0f });
+                        line_renderer.render(cam_mat, spring.point1.get_world_point(), spring.point2.get_world_point(), { 0.0f, 1.0f, 1.0f, 1.0f });
                     }
 
                     // Draw gizmos for object drag positions (dragging point on object & target point to move)
@@ -193,7 +227,7 @@ export namespace scene3
                             glm::mat4 transform(1.0f);
                             transform = glm::translate(transform, start_point);
                             transform = glm::scale(transform, { 0.1, 0.1, 0.1 });
-                            cube_renderer.render(cam_mat, transform, gizmo_color);
+                            sphere_renderer.render(cam_mat, transform, gizmo_color);
                         }
 
                         // Second end
@@ -201,7 +235,7 @@ export namespace scene3
                             glm::mat4 transform(1.0f);
                             transform = glm::translate(transform, end_point);
                             transform = glm::scale(transform, { 0.1, 0.1, 0.1 });
-                            cube_renderer.render(cam_mat, transform, gizmo_color);
+                            sphere_renderer.render(cam_mat, transform, gizmo_color);
                         }
                     }
 
@@ -222,15 +256,7 @@ export namespace scene3
                             ImGui::SliderFloat("Spring Coefficient", &spring_coef, 0.0f, 10.0f);
                             ImGui::SliderFloat("Linear Damping", &linear_damping, 0.0f, 1.0f);
                             ImGui::SliderFloat("Angular Damping", &angular_damping, 0.0f, 1.0f);
-
-                            ImGui::NewLine();
-
-                            auto rotation = camera.transform.euler_rotation();
-                            ImGui::Text("[Camera Transform]");
-                            ImGui::Separator();
-                            ImGui::Text(fmt::format("Yaw   (Y-axis): {}", glm::degrees(rotation.yaw)).c_str());
-                            ImGui::Text(fmt::format("Pitch (X-axis): {}", glm::degrees(rotation.pitch)).c_str());
-                            ImGui::Text(fmt::format("Roll  (Z-axis): {}", glm::degrees(rotation.roll)).c_str());
+                            ImGui::SliderFloat("Gravity", &gravity, 0.0f, 10.0f);
                         }
                         ImGui::End();
                     });
@@ -244,4 +270,4 @@ export namespace scene3
             std::cout << e.what() << std::endl;
         }
     }
-} // namespace scene3
+} // namespace scene4

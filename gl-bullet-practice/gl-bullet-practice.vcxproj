@@ -46,6 +46,7 @@
     <ClCompile Include="modules\scene\Scene1.ixx" />
     <ClCompile Include="modules\scene\Scene2.ixx" />
     <ClCompile Include="modules\scene\Scene3.ixx" />
+    <ClCompile Include="modules\scene\Scene4.ixx" />
     <ClCompile Include="modules\shader\IShaderSource.ixx" />
     <ClCompile Include="modules\shader\ShaderProgram.ixx" />
     <ClCompile Include="modules\shader\ShaderSourceComposite.ixx" />
