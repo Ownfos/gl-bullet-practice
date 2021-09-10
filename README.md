@@ -39,7 +39,20 @@ A test project for using OpenGL and Bullet Physics together, with latest support
   - gl-bullet-practice
     - modules - OpenGL and Bullet Physics wrapper classes as module interface unit
     - resources - shaders written in GLSL
-    - sources - main.cpp which contains testbench code
+    - sources - main.cpp which invokes testbench code implemented in 'Scene###.ixx' file
+
+## Purpose of each scene
+- Scene1.ixx
+  - Create and render multiple cubes
+  - Show FPS record as ImPlot bar graph
+  - Drag cubes with mouse
+- Scene2.ixx
+  - Test CubeRenderer and LineRenderer functionality
+- Scene3.ixx
+  - Test multiple springs
+  - Control spring strength and linear/angular damping with ImGui sliders
+  - Drag cubes with mouse
+##### NOTE: Each test programs are separated into 'scene###.ixx' files under modules/scene folder
 
 ## Project setting
 - Visual Studio 2022 Preview 3.1
