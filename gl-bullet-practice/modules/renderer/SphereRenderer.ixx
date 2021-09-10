@@ -3,25 +3,25 @@ module;
 #include <gl/glew.h>
 #include <glm/glm.hpp>
 
-export module CubeRenderer;
+export module SphereRenderer;
 
 import ShaderProgram;
 import BufferPreset;
-import Cube;
+import Sphere;
 
 using namespace ownfos::primitive;
 
 export namespace ownfos::opengl
 {
-    class CubeRenderer
+    class SphereRenderer
     {
     public:
-        CubeRenderer()
+        SphereRenderer(int num_vertices_per_half_circle = 20, bool is_surface_smooth = true)
             : vertex_shader_source("resources/simple_mesh_vs.txt")
             , fragment_shader_source("resources/simple_mesh_fs.txt")
             , shader(&vertex_shader_source, &fragment_shader_source)
-            , cube_data(create_cube_model_data())
-            , buffer_preset({ &cube_data.position, &cube_data.normal, &cube_data.indices })
+            , sphere_data(create_sphere_model_data(num_vertices_per_half_circle, is_surface_smooth))
+            , buffer_preset({ &sphere_data.position, &sphere_data.normal, &sphere_data.indices })
         {}
 
         void render(const glm::mat4& camera, const glm::mat4& transform, const glm::vec4& color)
@@ -32,7 +32,7 @@ export namespace ownfos::opengl
             shader.set_uniform("color", color);
 
             buffer_preset.use();
-            draw_indexed(GL_TRIANGLES, cube_data.indices.get_num_indices(), 0);
+            draw_indexed(GL_TRIANGLES, sphere_data.indices.get_num_indices(), 0);
         }
 
     private:
@@ -40,7 +40,7 @@ export namespace ownfos::opengl
         ShaderSourceFromFile fragment_shader_source;
         ShaderProgram shader;
 
-        PrimitiveModelData cube_data;
+        PrimitiveModelData sphere_data;
         BufferPreset buffer_preset;
     };
 } // namespace ownfos::opengl

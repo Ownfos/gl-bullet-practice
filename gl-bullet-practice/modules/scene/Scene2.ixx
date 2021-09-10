@@ -12,13 +12,14 @@ export module Scene2;
 import Window;
 import InteractiveCamera;
 import CubeRenderer;
+import SphereRenderer;
 import LineRenderer;
 
 using namespace ownfos::opengl;
 
 export namespace scene2
 {
-    // Test InteractiveCamera, CubeRenderer, and LineRenderer
+    // Test InteractiveCamera and primitive renderers
     void run()
     {
         try
@@ -27,6 +28,8 @@ export namespace scene2
             auto window = Window(1200, 800, "hello, world!", { 3, 3 });
             window.exit_when_pressed(GLFW_KEY_ESCAPE);
 
+            auto smooth_sphere_renderer = SphereRenderer();
+            auto flat_sphere_renderer = SphereRenderer(10, false);
             auto cube_renderer = CubeRenderer();
             auto line_renderer = LineRenderer();
 
@@ -54,7 +57,9 @@ export namespace scene2
                 window.clear({ 1,1,1,1 });
 
                 auto cam_mat = camera.get_matrix();
-                cube_renderer.render(cam_mat, glm::scale(glm::mat4(1.0f), { 0.5, 0.5, 0.5 }), { 0,1,1,1 });
+                cube_renderer.render(cam_mat, glm::scale(glm::translate(glm::mat4(1.0f), { 0, 2, 0 }), { 0.5, 0.5, 0.5 }), { 0.0f,0.5f,0.5f,1.0f });
+                smooth_sphere_renderer.render(cam_mat, glm::scale(glm::translate(glm::mat4(1.0f), { -2, 0, 0 }), { 0.5, 0.5, 0.5 }), { 0.0f,0.5f,0.5f,1.0f });
+                flat_sphere_renderer.render(cam_mat, glm::scale(glm::translate(glm::mat4(1.0f), { 2, 0, 0 }), { 0.5, 0.5, 0.5 }), { 0.0f,0.5f,0.5f,1.0f });
                 line_renderer.render(cam_mat, {0, 0, 0}, { 1,0,0 }, { 1,0,0,1 });
                 line_renderer.render(cam_mat, {0, 0, 0}, { 0,1,0 }, { 0,1,0,1 });
                 line_renderer.render(cam_mat, {0, 0, 0}, { 0,0,1 }, { 0,0,1,1 });

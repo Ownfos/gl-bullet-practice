@@ -168,12 +168,18 @@
     <ClCompile Include="modules\physics\ObjectDragger.ixx">
       <Filter>모듈\physics\dragging</Filter>
     </ClCompile>
+    <ClCompile Include="modules\primitive\Sphere.ixx">
+      <Filter>모듈\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\renderer\SphereRenderer.ixx">
+      <Filter>모듈\renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="resources\cube_fs.txt">
+    <Text Include="resources\simple_mesh_fs.txt">
       <Filter>리소스 파일</Filter>
     </Text>
-    <Text Include="resources\cube_vs.txt">
+    <Text Include="resources\simple_mesh_vs.txt">
       <Filter>리소스 파일</Filter>
     </Text>
     <Text Include="resources\line_vs.txt">

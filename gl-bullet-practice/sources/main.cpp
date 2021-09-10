@@ -4,7 +4,7 @@ import Scene3;
 
 int main()
 {
-    //scene1::run();
-    //scene2::run();
+    scene1::run();
+    scene2::run();
     scene3::run();
 }

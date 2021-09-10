@@ -39,8 +39,10 @@
     <ClCompile Include="modules\primitive\Cube.ixx" />
     <ClCompile Include="modules\primitive\Plane.ixx" />
     <ClCompile Include="modules\primitive\PrimitiveModelData.ixx" />
+    <ClCompile Include="modules\primitive\Sphere.ixx" />
     <ClCompile Include="modules\renderer\CubeRenderer.ixx" />
     <ClCompile Include="modules\renderer\LineRenderer.ixx" />
+    <ClCompile Include="modules\renderer\SphereRenderer.ixx" />
     <ClCompile Include="modules\scene\Scene1.ixx" />
     <ClCompile Include="modules\scene\Scene2.ixx" />
     <ClCompile Include="modules\scene\Scene3.ixx" />
@@ -56,8 +58,8 @@
     <ClCompile Include="sources\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="resources\cube_fs.txt" />
-    <Text Include="resources\cube_vs.txt" />
+    <Text Include="resources\simple_mesh_fs.txt" />
+    <Text Include="resources\simple_mesh_vs.txt" />
     <Text Include="resources\line_fs.txt" />
     <Text Include="resources\line_vs.txt" />
   </ItemGroup>
