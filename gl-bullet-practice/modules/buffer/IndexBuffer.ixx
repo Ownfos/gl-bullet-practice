@@ -13,6 +13,7 @@ export namespace ownfos::opengl
     {
     public:
         IndexBuffer(const std::vector<unsigned int>& indices, unsigned int usage = GL_STATIC_DRAW)
+            : num_indices(indices.size())
         {
             glGenBuffers(1, &buffer);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
@@ -24,7 +25,13 @@ export namespace ownfos::opengl
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
         }
 
+        int get_num_indices() const
+        {
+            return num_indices;
+        }
+
     private:
         unsigned int buffer;
+        int num_indices;
     };
 } // namespace ownfos::opengl
