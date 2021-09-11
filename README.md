@@ -38,6 +38,10 @@ A test project for using OpenGL and Bullet Physics together, with latest support
 | :---: |
 | *Renderers for smooth sphere (left), cube (top), flat sphere (right), and lines (xyz axis)* |
 
+| ![spring constraint](https://user-images.githubusercontent.com/39623255/132942354-95335315-4f45-4c99-8c63-26577168eedd.gif) |
+| :---: |
+| *Bullet's Spring constraint* |
+
 ## Project folder structure
 - root
   - gl-bullet-practice
@@ -56,6 +60,10 @@ A test project for using OpenGL and Bullet Physics together, with latest support
   - Test multiple springs
   - Control spring strength and linear/angular damping with ImGui sliders
   - Drag cubes with mouse
+- Scene4.ixx
+  - Test custom spring with spheres connected in cube/tetrahedron position
+- Scene5.ixx
+  - Test Bullet's built-in spring constraint with two cubes
 ##### NOTE: Each test programs are separated into 'scene###.ixx' files under modules/scene folder
 
 ## Project setting
