@@ -112,6 +112,11 @@ export namespace ownfos::bullet
             return transform;
         }
 
+        btVector3 get_scale() const
+        {
+            return scale;
+        }
+
         void set_damping(btScalar linear, btScalar angular)
         {
             rigid_body->setDamping(linear, angular);

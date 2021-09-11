@@ -177,6 +177,15 @@
     <ClCompile Include="modules\scene\Scene4.ixx">
       <Filter>모듈\scene</Filter>
     </ClCompile>
+    <ClCompile Include="modules\scene\Scene5.ixx">
+      <Filter>모듈\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SpringConstraint.ixx">
+      <Filter>모듈\physics\spring</Filter>
+    </ClCompile>
+    <ClCompile Include="IBulletConstraint.ixx">
+      <Filter>모듈\physics\spring</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\simple_mesh_fs.txt">

@@ -31,17 +31,6 @@ using namespace ownfos::imgui;
 using namespace ownfos::bullet;
 using namespace ownfos::utility;
 
-std::shared_ptr<RigidBody> create_uniform_cube(const btVector3& position)
-{
-    return std::make_shared<RigidBody>(RigidBodyConfig{
-        .shape = std::make_shared<btBoxShape>(btVector3{ 1, 1, 1 }),
-        .mass = 1.0f,
-        .transform = {
-            .position = position
-        }
-    });
-}
-
 struct RenderedCube
 {
     RigidBody* object;

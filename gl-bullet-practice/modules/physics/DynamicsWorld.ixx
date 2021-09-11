@@ -9,6 +9,7 @@ module;
 export module DynamicsWorld;
 
 export import IDynamicsWorldComponents;
+export import IBulletConstraint;
 export import RigidBody;
 export import Ray;
 export import HitInfo;
@@ -55,6 +56,11 @@ export namespace ownfos::bullet
             // If the btRigidBody instance gets deallocated before we remove it,
             // world->removeCollisionObject(...) will cause an invalid access error.
             rigid_bodies.push_back(rigid_body);
+        }
+
+        void add_constraint(IBulletConstraint* constraint)
+        {
+            world->addConstraint(constraint->get_constraint(), constraint->is_linked_object_collision_allowed());
         }
 
         void step_simulation(btScalar time_step, int max_substep)

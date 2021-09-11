@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="IBulletConstraint.ixx" />
     <ClCompile Include="modules\buffer\IndexBuffer.ixx" />
     <ClCompile Include="modules\buffer\VertexBuffer.ixx" />
     <ClCompile Include="modules\buffer\IBuffer.ixx" />
@@ -47,6 +48,7 @@
     <ClCompile Include="modules\scene\Scene2.ixx" />
     <ClCompile Include="modules\scene\Scene3.ixx" />
     <ClCompile Include="modules\scene\Scene4.ixx" />
+    <ClCompile Include="modules\scene\Scene5.ixx" />
     <ClCompile Include="modules\shader\IShaderSource.ixx" />
     <ClCompile Include="modules\shader\ShaderProgram.ixx" />
     <ClCompile Include="modules\shader\ShaderSourceComposite.ixx" />
@@ -57,6 +59,7 @@
     <ClCompile Include="modules\window\GLFWInitializer.ixx" />
     <ClCompile Include="modules\window\Window.ixx" />
     <ClCompile Include="sources\main.cpp" />
+    <ClCompile Include="SpringConstraint.ixx" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\simple_mesh_fs.txt" />
