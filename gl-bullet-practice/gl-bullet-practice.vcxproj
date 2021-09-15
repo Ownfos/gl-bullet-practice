@@ -26,6 +26,11 @@
     <ClCompile Include="modules\buffer\BufferPreset.ixx" />
     <ClCompile Include="modules\camera\Camera.ixx" />
     <ClCompile Include="modules\camera\InteractiveCamera.ixx" />
+    <ClCompile Include="modules\expression\Add.ixx" />
+    <ClCompile Include="modules\expression\IExpression.ixx" />
+    <ClCompile Include="modules\expression\Multiply.ixx" />
+    <ClCompile Include="modules\expression\Subtract.ixx" />
+    <ClCompile Include="modules\expression\Value.ixx" />
     <ClCompile Include="modules\imgui\ImGuiHelper.ixx" />
     <ClCompile Include="modules\physics\DefaultDynamicsWorldComponents.ixx" />
     <ClCompile Include="modules\physics\DynamicsWorld.ixx" />

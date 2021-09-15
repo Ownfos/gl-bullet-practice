@@ -61,6 +61,9 @@
     <Filter Include="모듈\physics\dragging">
       <UniqueIdentifier>{c94606ca-0f96-4abf-8dbb-203965d2964e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="모듈\expression">
+      <UniqueIdentifier>{53e6c974-ac61-4e7c-8a23-71569e1d1ebe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="modules\buffer\IBuffer.ixx">
@@ -185,6 +188,21 @@
     </ClCompile>
     <ClCompile Include="IBulletConstraint.ixx">
       <Filter>모듈\physics\spring</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\expression\Add.ixx">
+      <Filter>모듈\expression</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\expression\IExpression.ixx">
+      <Filter>모듈\expression</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\expression\Multiply.ixx">
+      <Filter>모듈\expression</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\expression\Subtract.ixx">
+      <Filter>모듈\expression</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\expression\Value.ixx">
+      <Filter>모듈\expression</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
