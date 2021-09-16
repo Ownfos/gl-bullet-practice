@@ -42,6 +42,10 @@ A test project for using OpenGL and Bullet Physics together, with latest support
 | :---: |
 | *Bullet's Spring constraint* |
 
+| ![lagrangian mechanics](https://user-images.githubusercontent.com/39623255/133562041-e04faf13-cb60-4aca-9c11-77c1132baa29.gif) |
+| :---: |
+| *Single particle with radius constraint, using custom lagrangian mechanics simulator* |
+
 ## Project folder structure
 - root
   - gl-bullet-practice
@@ -64,6 +68,8 @@ A test project for using OpenGL and Bullet Physics together, with latest support
   - Test custom spring with spheres connected in cube/tetrahedron position
 - Scene5.ixx
   - Test Bullet's built-in spring constraint with two cubes
+- Scene6.ixx
+  - Test lagrangian mechanics with single particle on plane with radius constraint
 ##### NOTE: Each test programs are separated into 'scene###.ixx' files under modules/scene folder
 
 ## Project setting
