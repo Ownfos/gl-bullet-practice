@@ -1,6 +1,13 @@
 # gl-bullet-practice
 A test project for using OpenGL and Bullet Physics together, with latest support for c++20
 
+## How to run specific scene
+![image](https://user-images.githubusercontent.com/39623255/133563442-3c359d55-8dd2-4b33-b991-1fe4810e72b5.png)  
+Call each scene's run() function defined in namespace sceneXXX.
+```
+sceneXXX::run();
+```
+
 ## Project progression with GIFs
 | ![hello world](https://user-images.githubusercontent.com/39623255/131685890-35762f2a-ce82-44e1-ae11-8a75e731bd74.gif) |
 | :---: |
