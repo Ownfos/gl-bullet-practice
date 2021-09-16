@@ -80,7 +80,7 @@ sceneXXX::run();
 ##### NOTE: Each test programs are separated into 'scene###.ixx' files under modules/scene folder
 
 ## Project setting
-- Visual Studio 2022 Preview 3.1
+- Visual Studio 2022 Preview 4.0
 - c++latest as standard
 - x64 as build configuration
 - vcpkg commands
