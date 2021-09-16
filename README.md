@@ -53,6 +53,15 @@ sceneXXX::run();
 | :---: |
 | *Single particle with radius constraint, using custom lagrangian mechanics simulator* |
 
+| ![constraint control 1](https://user-images.githubusercontent.com/39623255/133600293-62ecbf32-33ef-4ed0-a9d0-53689ec61780.gif) |
+| :---: |
+| *Add real time gravity control* |
+
+| ![constraint control 2](https://user-images.githubusercontent.com/39623255/133600415-44214c2b-ceee-4e66-8253-ff1bde57eed8.gif) |
+| :---: |
+| *Add constraint correction with real time parameter control* |
+ 
+
 ## Project folder structure
 - root
   - gl-bullet-practice
