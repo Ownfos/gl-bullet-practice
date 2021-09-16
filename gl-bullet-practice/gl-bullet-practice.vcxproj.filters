@@ -204,6 +204,9 @@
     <ClCompile Include="modules\expression\Value.ixx">
       <Filter>모듈\expression</Filter>
     </ClCompile>
+    <ClCompile Include="modules\scene\Scene6.ixx">
+      <Filter>모듈\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\simple_mesh_fs.txt">
